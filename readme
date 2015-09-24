@@ -10,27 +10,27 @@ COPYRIGHT
 		Feel free to use
 
 DESCRIPTION
-	Sish is a program that interprets commands that users type in and executes them. It acts as an interface between users and the underline operating system. The commands can be either an executable program or an internal command of sish. To start the sish, users will need to type in command:
+		Sish is a program that interprets commands that users type in and executes them. It acts as an interface between users and the underline operating system. The commands can be either an executable program or an internal command of sish. To start the sish, users will need to type in command:
 
-     sish [-x] [-d <level>] [-f file [arg] …]
+		sish [-x] [-d <level>] [-f file [arg] …]
 
-     where the square brackets ([ ]) indicate an optional word(s), and ”...” indicates 0 or more words. The options are:
+		where the square brackets ([ ]) indicate an optional word(s), and ”...” indicates 0 or more words. The options are:
 
-     -x: The command line after variable substitution is displayed before the command is evaluated.     
+		-x: The command line after variable substitution is displayed before the command is evaluated.     
 
-     -d <DebugLevel>: Output debug messages. If DebugLevel=0, there will be no debug messages displayed. DebugLevel=1 means debug information will be displayed.
+		-d <DebugLevel>: Output debug messages. If DebugLevel=0, there will be no debug messages displayed. DebugLevel=1 means debug information will be displayed.
 
-     -f file [Arg] ...: Uses can use this flag to specify the input file of sish. When –f is specified, the shell runs in a batch mode where input is from the file instead of the terminal. The input file is a shell script, which contains a line of shell commands. No built-in control structures are supported in the shell command.
+		-f file [Arg] ...: Uses can use this flag to specify the input file of sish. When –f is specified, the shell runs in a batch mode where input is from the file instead of the terminal. The input file is a shell script, which contains a line of shell commands. No built-in control structures are supported in the shell command.
 
-     After the user start the shell, the shell then returns the prompt “sish >>” to the user. User then can type in the command following the prompt. The commands consist of the name of the program and possibly some arguments. Arguments should be separated by one or more white space.
+		After the user start the shell, the shell then returns the prompt “sish >>” to the user. User then can type in the command following the prompt. The commands consist of the name of the program and possibly some arguments. Arguments should be separated by one or more white space.
 
-     In the UNIX environment, most programs take input from the standard input, i.e. the keyboard, and many of them write output to the standard output, i.e. the terminal screen. In sish, users can redirect the input using the symbol “<” and the output using the symbol “>”. Users can also use a pipe to connect the output of a command to the input of another command. The symbol for a pipe is “|”. One example of piping is:
+		In the UNIX environment, most programs take input from the standard input, i.e. the keyboard, and many of them write output to the standard output, i.e. the terminal screen. In sish, users can redirect the input using the symbol “<” and the output using the symbol “>”. Users can also use a pipe to connect the output of a command to the input of another command. The symbol for a pipe is “|”. One example of piping is:
 
-     sish >> who | wc –l
+		sish >> who | wc –l
 
-     In this command, the pipe sends the output of who command to the input of the wc command.
+		In this command, the pipe sends the output of who command to the input of the wc command.
 
-     If the –f is specified when starting the shell, the shell will run in the batch mode, meaning the shell will execute all commands in the script file and exits when it reach the end of the file.
+		If the –f is specified when starting the shell, the shell will run in the batch mode, meaning the shell will execute all commands in the script file and exits when it reach the end of the file.
 
 
 OPTIONS
