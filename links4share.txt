@@ -1,0 +1,7 @@
+Tutorial: write a simple shell in C
+http://stephen-brennan.com/2015/01/16/write-a-shell-in-c/
+
+Quora: hints for writing a shell
+https://www.quora.com/What-are-some-good-tutorials-for-writing-a-shell-in-C
+
+Reference book that might be useful: Advanced Programming in the Unix Environment, Chapter 7,8
