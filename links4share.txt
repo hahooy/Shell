@@ -1,7 +1,23 @@
 Tutorial: write a simple shell in C
 http://stephen-brennan.com/2015/01/16/write-a-shell-in-c/
 
+------
+
 Quora: hints for writing a shell
 https://www.quora.com/What-are-some-good-tutorials-for-writing-a-shell-in-C
 
+------
+
 Reference book that might be useful: Advanced Programming in the Unix Environment, Chapter 7,8
+
+------
+
+Signal handling for background processes:
+
+With a shell that doesn’t support job control, when we execute a process in the background, as in
+
+cc main.c &
+
+the shell automatically sets the disposition of the interrupt and quit signals in the background process to be ignored. This is done so that if we type the interrupt character, it doesn’t affect the background process. If this weren’t done and we typed the interrupt character, it would terminate not only the foreground process, but also all the background processes.
+
+-----
