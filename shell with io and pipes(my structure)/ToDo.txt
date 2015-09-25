@@ -1,0 +1,4 @@
+Date: March 4, 2015
+* Update the parser and the overall code to a more C++-like style.
+* Change the C strings to C++ strings.
+* Making it possible to run a command with any number of pipes.
