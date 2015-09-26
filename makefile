@@ -6,8 +6,8 @@ sish: sish.c
 exp: exp.c
 	gcc -Wall -g exp.c -o exp
 
-parser: parser.c
-	gcc -Wall -g parser.c -o parser
+cmlparser: cmlparser.c
+	gcc -Wall -g cmlparser.c -o cmlparser
 
 clean:
 	rm -f sish exp
