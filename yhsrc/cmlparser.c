@@ -71,12 +71,14 @@ void Program_print(Program *p)
 
 /* ----------------- */
 
+int numOfPipes = 0;
 int dflag = 0;
 int xflag = 0;
 int fflag = 0;
 int debugLevel = 0;
 char *batchfile;
 char *filearg[MAXFILEARG];
+
 
 /* parse the command line arguments when executing sish */
 void parsecml(int argc, char *argv[])
@@ -134,7 +136,6 @@ int tokcml(char *input, char **tokens[])
     char *inputcpy = strdup(input);    
     char *token;
 
-    printf("!");
     if ((*tokens =  malloc(maxsize * sizeof(char*))) == NULL) {
 	fprintf(stderr, "error: memory allocation failed\n");
     }
@@ -187,10 +188,24 @@ int getArgs()
     return 0;
 }
 
+/* set the number of pipes */
+void setNumOfPipes(char *tokens[]) {
+    int temp = 0;
+    for (int i = 0; tokens[i] != NULL; i++) {
+	if (strcmp("|", tokens[i]) == 0) {
+	    temp++;
+	}
+    }
+    numOfPipes = temp;
+}
+
+
+
 /* return the number of pipes */
 int ispiped()
 {
     /* TODO */
+    
     return 0;
 }
 
@@ -210,6 +225,7 @@ int parse_input_line(void)
 int main(int argc, char *argv[])
 {
     /* parsecml test */
+    printf("\n\nparsecml test:\n\n");
     parsecml(argc - 1, argv + 1);
     
     printf("dflag: %d\n", dflag);
@@ -222,20 +238,25 @@ int main(int argc, char *argv[])
     }
 
     /* tokcml test */
-    char *input = "echo hello | wc";
+    printf("\n\ntolcml test:\n\n");
+    char *input = "ls -alg | wc | cat | more";
     char **tokens;
 
     tokcml(input, &tokens);
     for (int i = 0; tokens[i] != NULL; i++) {
 	printf("tokens[%d]: %s\n", i, tokens[i]);
     }
+    setNumOfPipes(tokens);
+    printf("The number of pipes is: %d\n", numOfPipes);
     token_destroy(tokens);
 
     /* printerr test */
+    printf("\n\nprinterr test:\n\n");
     char *errorstr = "This is an error";
     printerr(debugLevel, errorstr);
 
     /* program struct test */
+    printf("\n\nprogram struct test:\n\n");
     char *test_argv[3];
     test_argv[0] = "myprog";
     test_argv[1] = "arg1";
