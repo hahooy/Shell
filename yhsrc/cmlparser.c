@@ -21,13 +21,52 @@ typedef struct {
 } Program;
 
 Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile);
-void Program_destroy(Program p);
-void Program_print(Program p);
+void Program_destroy(Program *p);
+void Program_print(Program *p);
 
+Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile)
+{
+    Program *p = malloc(sizeof(Program));
+    assert(p != NULL);
 
+    p -> argc = argc;
+    p -> stdout_redirect = stdout_redirect;
+    p -> stdin_redirect = stdin_redirect;
+    p -> outfile = strdup(outfile);
+    p -> infile = strdup(infile);
+    p -> argv = malloc(argc * sizeof(char *));
+    for (int i = 0; i < argc; i++) {
+	(p -> argv)[i] = strdup(argv[i]);
+    }
 
+    return p;
+}
 
+void Program_destroy(Program *p)
+{
+    assert(p != NULL);
 
+    free(p -> outfile);
+    free(p -> infile);
+    for (int i = 0; i < p -> argc; i++) {
+	assert((p -> argv)[i] != NULL);
+	free((p -> argv)[i]);
+    }
+    free(p -> argv);
+    free(p);
+}
+
+void Program_print(Program *p)
+{
+    printf("argc: %d\n", p -> argc);
+    printf("stdout_redirect: %d\n", p -> stdout_redirect);
+    printf("stdin_redirect: %d\n", p -> stdin_redirect);
+    printf("outfile: %s\n", p -> outfile);
+    printf("infile: %s\n", p -> infile);
+    for (int i = 0; i < p -> argc; i++) {
+	printf("argv[%d]: %s\n", i, (p -> argv)[i]);
+    }    
+}
 
 
 /* ----------------- */
@@ -170,6 +209,7 @@ int parse_input_line(void)
 /* unit testing */
 int main(int argc, char *argv[])
 {
+    /* parsecml test */
     parsecml(argc - 1, argv + 1);
     
     printf("dflag: %d\n", dflag);
@@ -181,15 +221,26 @@ int main(int argc, char *argv[])
 	printf("filearg[%d]: %s\n", i, filearg[i]);
     }
 
+    /* tokcml test */
     char *input = "echo hello | wc";
     char **tokens;
-    char *errorstr = "This is an error";
-
-    printerr(debugLevel, errorstr);
 
     tokcml(input, &tokens);
     for (int i = 0; tokens[i] != NULL; i++) {
 	printf("tokens[%d]: %s\n", i, tokens[i]);
     }
     token_destroy(tokens);
+
+    /* printerr test */
+    char *errorstr = "This is an error";
+    printerr(debugLevel, errorstr);
+
+    /* program struct test */
+    char *test_argv[3];
+    test_argv[0] = "myprog";
+    test_argv[1] = "arg1";
+    test_argv[2] = "arg2";
+    Program *p = Program_create(3, test_argv, 1, 1, "F2", "F1");
+    Program_print(p);
+    Program_destroy(p);
 }
