@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <signal.h>
+#include <signal.h> /* needed for signal */
+#include "my_signo.h" /* needed for signal handling */
+
 
 #define LSH_TOK_BUFSIZE 64
 #define LSH_TOK_DELIM " \t\r\n\a"
 char **split_line(char *line); /* tokenize a line of string */
-void sig_handler(int); /* signal handling for all signals */
 
 int main(int argc, char *argv[]) {
     extern char **environ;
@@ -18,18 +19,7 @@ int main(int argc, char *argv[]) {
     size_t linecap = 0;
     char **tokens = malloc(100 * sizeof(char *));
 
-    if (signal(SIGINT, sig_handler) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGTERM");
-    }
-    if (signal(SIGQUIT, sig_handler) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGTERM");
-    }
-    if (signal(SIGCONT, sig_handler) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGTERM");
-    }
-    if (signal(SIGTSTP, sig_handler) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGTERM");
-    }
+    sig_init(); /* signal functions initialization */
 
     fprintf(stdout, "The sish shell is now executing\n");
 
@@ -87,29 +77,4 @@ char **split_line(char *line) {
     free(linecpy);
     tokens[position] = NULL;
     return tokens;
-}
-
-// signal handler
-void sig_handler(int signo)
-{
-    switch (signo) {
-    case SIGINT:
-	printf(" catched SIGINT\n");
-	printf("sish >> ");
-	fflush(stdout);
-	break;
-    case SIGQUIT:
-	printf("catched SIGQUIT\n");
-	break;
-    case SIGCONT:
-	printf("catched SIGQUIT\n");
-	break;
-    case SIGTSTP:
-	printf("catched SIGTSTP\n");
-	break;
-    default:
-	printf("other signals");
-	break;
-    }
-    return;
 }

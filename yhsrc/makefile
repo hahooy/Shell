@@ -9,5 +9,8 @@ exp: exp.c
 cmlparser: cmlparser.c
 	gcc -Wall -g cmlparser.c -o cmlparser
 
+main: main.c my_signo.c my_signo.h
+	gcc -Wall -g -o main main.c my_signo.c
+
 clean:
 	rm -f sish exp
