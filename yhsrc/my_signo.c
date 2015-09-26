@@ -1,5 +1,8 @@
 #include "my_signo.h"
 
+/* to initialize the signal functions, the sig_init function 
+needs to be called at the begining of the code execution */
+
 /* init signal functions */
 void sig_init(void)
 {
@@ -43,6 +46,7 @@ void sig_catch(int signo)
     switch (signo) {
     case SIGINT:
 	printf(" catched SIGINT: %d\n", signo);
+	/* pass signal to child: kill(signo, fg_process_id); */
 	printf("sish >> ");
 	fflush(stdout);
 	break;
