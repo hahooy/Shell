@@ -61,7 +61,8 @@ void parsecml(int argc, char *argv[])
 }
 
 /* unit testing */
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     parsecml(argc - 1, argv + 1);
     
     printf("dflag: %d\n", dflag);
