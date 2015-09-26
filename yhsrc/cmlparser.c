@@ -9,12 +9,35 @@
 #define MAXTOKENS 1000
 #define TOKENDELM " \t\n"
 
+/* ---------------- */
+
+typedef struct {
+    int argc;
+    char **argv;
+    int stdout_redirect;
+    int stdin_redirect;
+    char *outfile;
+    char *infile;
+} Program;
+
+Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile);
+void Program_destroy(Program p);
+void Program_print(Program p);
+
+
+
+
+
+
+
+/* ----------------- */
+
 int dflag = 0;
 int xflag = 0;
 int fflag = 0;
 int debugLevel = 0;
 char *batchfile;
-char *arg[MAXFILEARG];
+char *filearg[MAXFILEARG];
 
 /* parse the command line arguments when executing sish */
 void parsecml(int argc, char *argv[])
@@ -57,7 +80,7 @@ void parsecml(int argc, char *argv[])
 
     if (optind < argc) { /* arguments assigned to shell variables */
 	for (int i = 0; optind < argc; i++) {
-	    arg[i] = argv[optind];
+	    filearg[i] = argv[optind];
 	    optind++;
 	}
     }
@@ -98,7 +121,7 @@ int tokcml(char *input, char **tokens[])
 }
 
 /* free the tokens, need to be called after done with tokens */
-int freetok(char *tokens[])
+int token_destroy(char *tokens[])
 {
     for (int i = 0; tokens[i] != NULL; i++) {
 	assert(tokens[i] != NULL);
@@ -109,15 +132,38 @@ int freetok(char *tokens[])
     return 0;
 }
 
+/* print the error message if debug level is larger than 0 */
 void printerr(int debugLevel, char *errmsg) {
     if (debugLevel > 0) {
 	fprintf(stderr, "%s\n", errmsg);
     }
 }
 
+/* go through tokens and store the 
+arguments for each program, this function
+should be called after tokcml */
+int getArgs()
+{
+    /* TODO */
+    return 0;
+}
+
+/* return the number of pipes */
 int ispiped()
 {
+    /* TODO */
+    return 0;
+}
 
+/* the only parser needed in the shell loop.
+It needs to be called at the begining of the
+loop. It construct all the arguments for programs*/
+int parse_input_line(void)
+{
+    /* TODO */
+    char *line;
+    size_t linecap = 0;
+    getline(&line, &linecap, stdin);
     return 0;
 }
 
@@ -131,8 +177,8 @@ int main(int argc, char *argv[])
     printf("fflag: %d\n", fflag);
     printf("debugLevel: %d\n", debugLevel);
     printf("filename: %s\n", batchfile);
-    for (int i = 0; arg[i] != NULL; i++) {
-	printf("arg[%d]: %s\n", i, arg[i]);
+    for (int i = 0; filearg[i] != NULL; i++) {
+	printf("filearg[%d]: %s\n", i, filearg[i]);
     }
 
     char *input = "echo hello | wc";
@@ -145,5 +191,5 @@ int main(int argc, char *argv[])
     for (int i = 0; tokens[i] != NULL; i++) {
 	printf("tokens[%d]: %s\n", i, tokens[i]);
     }
-    freetok(tokens);
+    token_destroy(tokens);
 }
