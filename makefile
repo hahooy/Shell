@@ -6,5 +6,8 @@ sish: sish.c
 exp: exp.c
 	gcc -Wall -g exp.c -o exp
 
+parser: parser.c
+	gcc -Wall -g parser.c -o parser
+
 clean:
 	rm -f sish exp
