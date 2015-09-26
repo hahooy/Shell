@@ -1,0 +1,4 @@
+1: ls
+2: wc < input.txt > output.txt
+3: ls
+4: exit
