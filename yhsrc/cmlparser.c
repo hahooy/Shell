@@ -1,5 +1,13 @@
 #include "shell.h"
 
+/* -------variable definition--------- */
+
+int numOfPipes = 0;
+int dflag = 0;
+int xflag = 0;
+int fflag = 0;
+int debugLevel = 0;
+
 /* -------function definition--------- */
 
 /* methods of program object */
@@ -13,10 +21,11 @@ Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_re
     p -> stdin_redirect = stdin_redirect;
     p -> outfile = strdup(outfile);
     p -> infile = strdup(infile);
-    p -> argv = malloc(argc * sizeof(char *));
+    p -> argv = malloc((argc + 1) * sizeof(char *));
     for (int i = 0; i < argc; i++) {
 	(p -> argv)[i] = strdup(argv[i]);
     }
+    (p -> argv)[argc] = NULL;
 
     return p;
 }
@@ -250,21 +259,20 @@ int parse_input_line(void)
 
 
 /* ----------unit testing--------------- */
-int main(int argc, char *argv[])
-{
-    /* parse input line test case */
-    parse_input_line();
-    for (int i = 0; programs[i] != NULL; i++) {
-	printf("%d\n", i);
-	Program_print(programs[i]);
-    }
+ /* int main(int argc, char *argv[]) */
+ /* {  */
+ /*     /\* parse input line test case *\/ */
+ /*     parse_input_line(); */
+ /*     for (int i = 0; programs[i] != NULL; i++) { */
+ /* 	Program_print(programs[i]);  */
+ /*     }  */
 
-    /* clean up */
-    for (int i = 0; i < MAXNUMOFPROS; i++) {
-	if (programs[i] != NULL) {
-	    printf("%d\n", i);
-	    Program_destroy(programs[i]);
-	    programs[i] = NULL;
-	}
-    }
-}
+ /*     /\* clean up *\/ */
+ /*     for (int i = 0; i < MAXNUMOFPROS; i++) { */
+ /* 	if (programs[i] != NULL) { */
+ /* 	    printf("%d\n", i); */
+ /* 	    Program_destroy(programs[i]); */
+ /* 	    programs[i] = NULL; */
+ /* 	} */
+ /*     } */
+ /* } */
