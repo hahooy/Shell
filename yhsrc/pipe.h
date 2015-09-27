@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 
 // Execute piped commands
-void cmdPiped(Program command[],
+void cmdPiped(Program *command[],
               int numPipes,
               int dFlag) {
     int status;
@@ -55,7 +55,7 @@ void cmdPiped(Program command[],
                 close(pipefds[i]);
             }
             // execute command
-            if( execvp(*command[k]->arguments, command[k]->arguments) < 0 ){
+            if( execvp(*command[k]->argv, command[k]->argv) < 0 ){
                 printerr(dFlag, "execvp error\n");
                 exit(1);
             }
@@ -83,8 +83,8 @@ void cmdRedirection(Program* command,
                     int dFlag){
     // If output redirection
     if(command -> stdout_redirect){
-        fout = open(command -> outfile, O_WRONLY | O_CREAT, 0666);
-        if(out < 0){
+        int fout = open(command -> outfile, O_WRONLY | O_CREAT, 0666);
+        if(fout < 0){
             printerr(dFlag, "Can not open output file\n");
         }
         // copy fout to stdout
@@ -93,8 +93,8 @@ void cmdRedirection(Program* command,
     }
     // If input redirecction
     if(command -> stdin_redirect){
-        fin = open(command -> infile, O_RDONLY);
-        if(in < 0){
+        int fin = open(command -> infile, O_RDONLY);
+        if(fin < 0){
             printerr(dFlag, "Can not open input file\n");
         }
         // copy fin to stdin
