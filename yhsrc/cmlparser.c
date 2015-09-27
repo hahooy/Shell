@@ -7,6 +7,7 @@
 
 #define MAXFILEARG 100
 #define MAXTOKENS 1000
+#define MAXNUMOFPROS 4
 #define TOKENDELM " \t\n"
 
 /* ---------------- */
@@ -79,6 +80,7 @@ int fflag = 0;
 int debugLevel = 0;
 char *batchfile;
 char *filearg[MAXFILEARG];
+Program *programs[MAXNUMOFPROS];
 
 
 /* parse the command line arguments when executing sish */
@@ -186,24 +188,57 @@ should be called after tokcml */
 int getArgs(char *tokens[])
 {
     /* TODO */
-    int buffersize = 100;
-    char **temp = malloc(buffersize * sizeof(char *));
+    int position = 0;
+    int numPro = 0;
+    int buffersize = 100; /* assuming number of arguments is less than 100 */
+    char *temp[buffersize];
+    char *infile;
+    char *outfile;
+    int stdin_redirect = 0;
+    int stdout_redirect = 0;
+    
+    /* empty old programs */
+    for (int i = 0; i < MAXNUMOFPROS; i++) {
+	if (programs[i] != NULL) {
+	    Program_destroy(programs[i]);
+	    programs[i] = NULL;
+	}	
+    }
+
     if (ispiped()) {
 	for (int i = 0; tokens[i] != NULL; i++) {
+	    if (strcmp("|", tokens[i]) != 0) {
+		temp[position++] = tokens[i];
+	    } else {
+		Program *p = Program_create(position, temp, 0, 0, "", "");
+		programs[numPro++] = p;
+		position = 0;
+	    }	    
 	}
-
-
-
+	/* the last program */
+	Program *p = Program_create(position, temp, 0, 0, "", "");
+	programs[numPro] = p;
     } else {
-
-
-
-
+	position = 0;
+	for (int i = 0; tokens[i] != NULL; i++) {
+	    if (strcmp(">", tokens[i]) == 0) {
+		outfile = tokens[++i];
+		stdout_redirect = 1;
+	    } else if (strcmp("<", tokens[i]) == 0) {
+		infile = tokens[++i];
+		stdin_redirect = 1;
+	    } else {
+		temp[position++] = tokens[i];
+	    }
+	}
+	Program *p = Program_create(position, temp, stdout_redirect, stdin_redirect, outfile, infile);
+	programs[0] = p;
     }
+    assert(temp != NULL);
     return 0;
 }
 
-/* set the number of pipes */
+/* set the number of pipes, must be called before getArgs() */
 void setNumOfPipes(char *tokens[])
 {
     int temp = 0;
@@ -243,7 +278,7 @@ int parse_input_line(void)
 int main(int argc, char *argv[])
 {
     /* parsecml test */
-    printf("\n\nparsecml test:\n\n");
+    printf("\nparsecml test:\n");
     parsecml(argc - 1, argv + 1);
     
     printf("dflag: %d\n", dflag);
@@ -255,26 +290,15 @@ int main(int argc, char *argv[])
 	printf("filearg[%d]: %s\n", i, filearg[i]);
     }
 
-    /* tokcml test */
-    printf("\n\ntolcml test:\n\n");
-    char *input = "ls -alg   | wc | cat | more";
-    char **tokens;
-
-    tokcml(input, &tokens);
-    for (int i = 0; tokens[i] != NULL; i++) {
-	printf("tokens[%d]: %s\n", i, tokens[i]);
-    }
-    setNumOfPipes(tokens);
-    printf("The number of pipes is: %d\n", numOfPipes);
-    token_destroy(tokens);
 
     /* printerr test */
     printf("\n\nprinterr test:\n\n");
     char *errorstr = "This is an error";
     printerr(debugLevel, errorstr);
 
+
     /* program struct test */
-    printf("\n\nprogram struct test:\n\n");
+    printf("\nprogram struct test:\n");
     char *test_argv[3];
     test_argv[0] = "myprog";
     test_argv[1] = "arg1";
@@ -282,4 +306,49 @@ int main(int argc, char *argv[])
     Program *p = Program_create(3, test_argv, 1, 1, "F2", "F1");
     Program_print(p);
     Program_destroy(p);
+
+
+    /* tokcml test */
+    printf("\ntolcml test:\n");
+    char *input = "ls -alg   | wc | cat | more";
+    char **tokens;
+
+    tokcml(input, &tokens);
+    for (int i = 0; tokens[i] != NULL; i++) {
+	printf("tokens[%d]: %s\n", i, tokens[i]);
+    }
+
+
+    /* pipe setter and getter test */
+    printf("\npipesetter and getter test:\n");
+    setNumOfPipes(tokens);
+    printf("The number of pipes is: %d\n", getNumOfPipes());
+
+    
+    /* arguments reader test */
+    printf("\narguments reader test:\n");
+    getArgs(tokens);
+    for (int i = 0; programs[i] != NULL; i++) {
+	Program_print(programs[i]);
+    }
+    token_destroy(tokens);
+    
+    
+    /* arguments reader test 2 */
+    input = "myprog arg1 arg2 < F1 > F2";
+    printf("\narguments reader test 2:\ninput: %s\n", input);
+    tokcml(input, &tokens);
+    setNumOfPipes(tokens);
+    getArgs(tokens);
+    for (int i = 0; programs[i] != NULL; i++) {
+	Program_print(programs[i]);
+    }	
+
+    /* clean up */
+    for (int i = 0; i < MAXNUMOFPROS; i++) {
+	if (programs[i] != NULL) {
+	    Program_destroy(programs[i]);
+	}
+    }
+    token_destroy(tokens);
 }
