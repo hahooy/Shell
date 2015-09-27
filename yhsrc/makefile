@@ -6,7 +6,7 @@ sish: sish.c
 exp: exp.c
 	gcc -Wall -g exp.c -o exp
 
-cmlparser: cmlparser.c
+cmlparser: cmlparser.c shell.h
 	gcc -Wall -g cmlparser.c -o cmlparser
 
 main: main.c my_signo.c my_signo.h
