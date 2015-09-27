@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> /* for getopt */
+#include <signal.h> /* needed for signal */
+#include <fcntl.h> /* needed for open */
+#include <sys/types.h>
+#include <sys/stat.h>
 
 /* -------macro definition--------- */
 
@@ -42,7 +46,7 @@ int getNumOfPipes(void);
 int ispiped(void);
 int parse_input_line(void);
 /* io redirection functions */
-void cmdPiped(Program *, int, int);
+void cmdPiped(Program **, int, int);
 void cmdRedirection(Program *, int);
 
 /* -------variable decalaration--------- */

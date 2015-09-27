@@ -250,21 +250,20 @@ int parse_input_line(void)
 
 
 /* ----------unit testing--------------- */
-int main(int argc, char *argv[])
-{
-    /* parse input line test case */
-    parse_input_line();
-    for (int i = 0; programs[i] != NULL; i++) {
-	printf("%d\n", i);
-	Program_print(programs[i]);
-    }
+/* int main(int argc, char *argv[]) */
+/* { */
+/*     /\* parse input line test case *\/ */
+/*     parse_input_line(); */
+/*     for (int i = 0; programs[i] != NULL; i++) { */
+/* 	Program_print(programs[i]); */
+/*     } */
 
-    /* clean up */
-    for (int i = 0; i < MAXNUMOFPROS; i++) {
-	if (programs[i] != NULL) {
-	    printf("%d\n", i);
-	    Program_destroy(programs[i]);
-	    programs[i] = NULL;
-	}
-    }
-}
+/*     /\* clean up *\/ */
+/*     for (int i = 0; i < MAXNUMOFPROS; i++) { */
+/* 	if (programs[i] != NULL) { */
+/* 	    printf("%d\n", i); */
+/* 	    Program_destroy(programs[i]); */
+/* 	    programs[i] = NULL; */
+/* 	} */
+/*     } */
+/* } */
