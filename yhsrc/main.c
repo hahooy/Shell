@@ -16,11 +16,13 @@ int main(int argc, char *argv[])
 		cmdRedirection(programs[0], dflag);
 		execvp((programs[0] -> argv)[0], (programs[0] -> argv));
 		exit(1);
+	    } else {
+		while(wait(0) != pid);
 	    }
 	}else {
 	    cmdPiped(programs, getNumOfPipes(), dflag);
 	}
-	//while (wait(0) != pid);
+
     }
 }
 	
