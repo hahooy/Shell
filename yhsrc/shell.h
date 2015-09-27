@@ -51,11 +51,11 @@ void cmdRedirection(Program *, int);
 
 /* -------variable decalaration--------- */
 
-int numOfPipes = 0;
-int dflag = 0;
-int xflag = 0;
-int fflag = 0;
-int debugLevel = 0;
+int numOfPipes;
+int dflag;
+int xflag;
+int fflag;
+int debugLevel;
 char *batchfile;
 char *filearg[MAXFILEARG];
 Program *programs[MAXNUMOFPROS]; /* input programs */
