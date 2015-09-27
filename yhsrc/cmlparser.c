@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /* -------function definition--------- */
 
 /* methods of program object */
@@ -154,8 +155,8 @@ int getArgs(char *tokens[])
     int position = 0;
     int numPro = 0;
     char *temp[MAXTOKENS];
-    char *infile;
-    char *outfile;
+    char *infile = "";
+    char *outfile = "";
     int stdin_redirect = 0;
     int stdout_redirect = 0;
     
@@ -193,6 +194,7 @@ int getArgs(char *tokens[])
 		temp[position++] = tokens[i];
 	    }
 	}
+	
 	Program *p = Program_create(position, temp, stdout_redirect, stdin_redirect, outfile, infile);
 	programs[0] = p;
     }
@@ -204,6 +206,7 @@ int getArgs(char *tokens[])
 void setNumOfPipes(char *tokens[])
 {
     int temp = 0;
+
     for (int i = 0; tokens[i] != NULL; i++) {
 	if (strcmp("|", tokens[i]) == 0) {
 	    temp++;
@@ -238,24 +241,30 @@ int parse_input_line(void)
     tokcml(line, &tokens);
     setNumOfPipes(tokens);
     getArgs(tokens);
+    /* clean up */
     token_destroy(tokens);
+    free(line);
 
     return 0;
 }
 
-/* unit testing */
+
+/* ----------unit testing--------------- */
 int main(int argc, char *argv[])
 {
     /* parse input line test case */
     parse_input_line();
     for (int i = 0; programs[i] != NULL; i++) {
+	printf("%d\n", i);
 	Program_print(programs[i]);
     }
 
     /* clean up */
     for (int i = 0; i < MAXNUMOFPROS; i++) {
 	if (programs[i] != NULL) {
+	    printf("%d\n", i);
 	    Program_destroy(programs[i]);
+	    programs[i] = NULL;
 	}
     }
 }

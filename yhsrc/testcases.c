@@ -1,3 +1,4 @@
+/* unit testing */
 int main(int argc, char *argv[])
 {
     /* parsecml test */
@@ -93,7 +94,7 @@ int main(int argc, char *argv[])
     token_destroy(tokens);
 
 
-    /* arguments reader test 4 */
+    /* arguments reader test 5 */
     input = "prog1 arg1 arg2 | prog2 | prog3 arg1";
     printf("\narguments reader test 5:\ninput: %s\n", input);
     tokcml(input, &tokens);
@@ -105,11 +106,17 @@ int main(int argc, char *argv[])
     token_destroy(tokens);
 
 
-    /* parse input line test case */
-    parse_input_line();
+    /* arguments reader test 6 */
+    input = "prog1 arg1";
+    printf("\narguments reader test 6:\ninput: %s\n", input);
+    tokcml(input, &tokens);
+    setNumOfPipes(tokens);
+    getArgs(tokens);
     for (int i = 0; programs[i] != NULL; i++) {
 	Program_print(programs[i]);
     }
+    token_destroy(tokens);
+
 
     /* clean up */
     for (int i = 0; i < MAXNUMOFPROS; i++) {

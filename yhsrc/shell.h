@@ -14,7 +14,7 @@
 #define MAXNUMOFPROS 4  /* maximum number of input programs */
 #define TOKENDELM " \t\n" /* delimiters for parsing the command line input */
 
-/* -------function prototype--------- */
+/* -------define Program--------- */
 
 typedef struct {
     int argc;
@@ -25,9 +25,13 @@ typedef struct {
     char *infile;
 } Program;
 
+/* -------function prototype--------- */
+
+/* Program object methods */
 Program *Program_create(int, char **, int, int, char *, char *);
 void Program_destroy(Program *);
 void Program_print(Program *);
+/* parser related functions */
 void parsecml(int, char **);
 int tokcml(char *, char ***);
 int token_destroy(char **);
@@ -37,6 +41,9 @@ void setNumOfPipes(char **);
 int getNumOfPipes(void);
 int ispiped(void);
 int parse_input_line(void);
+/* io redirection functions */
+void cmdPiped(Program *, int, int);
+void cmdRedirection(Program *, int);
 
 /* -------variable decalaration--------- */
 
