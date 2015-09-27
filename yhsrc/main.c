@@ -2,8 +2,9 @@
 
 int main(int argc, char *argv[])
 {    
-    parsecml(argc, argv);
     int pid;
+    sig_init(); /* initialize signal functions */
+    parsecml(argc, argv);
     fprintf(stdout, "The sish shell is now executing\n");
 
     for (;;) {
