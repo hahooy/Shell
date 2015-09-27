@@ -20,22 +20,22 @@ void sig_init(void)
 	fprintf(stderr, "Can't catch SIGTSTP");
     }
     /* signals to be ignored */
-    if (signal(SIGABRT, sig_catch) == SIG_ERR) {
+    if (signal(SIGABRT, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGABRT");
     }
-    if (signal(SIGALRM, sig_catch) == SIG_ERR) {
+    if (signal(SIGALRM, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGALRM");
     }
-    if (signal(SIGHUP, sig_catch) == SIG_ERR) {
+    if (signal(SIGHUP, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGHUP");
     }
-    if (signal(SIGTERM, sig_catch) == SIG_ERR) {
+    if (signal(SIGTERM, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGTERM");
     }
-    if (signal(SIGUSR1, sig_catch) == SIG_ERR) {
+    if (signal(SIGUSR1, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGUSR1");
     }
-    if (signal(SIGUSR2, sig_catch) == SIG_ERR) {
+    if (signal(SIGUSR2, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGUSR2");
     }
 }
