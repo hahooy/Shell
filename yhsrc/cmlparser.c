@@ -20,9 +20,10 @@ typedef struct {
     char *infile;
 } Program;
 
-Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile);
-void Program_destroy(Program *p);
-void Program_print(Program *p);
+Program *Program_create(int, char **, int, int, char *, char *);
+void Program_destroy(Program *);
+void Program_print(Program *);
+int ispiped(void);
 
 Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile)
 {
@@ -182,14 +183,29 @@ void printerr(int debugLevel, char *errmsg) {
 /* go through tokens and store the 
 arguments for each program, this function
 should be called after tokcml */
-int getArgs()
+int getArgs(char *tokens[])
 {
     /* TODO */
+    int buffersize = 100;
+    char **temp = malloc(buffersize * sizeof(char *));
+    if (ispiped()) {
+	for (int i = 0; tokens[i] != NULL; i++) {
+	}
+
+
+
+    } else {
+
+
+
+
+    }
     return 0;
 }
 
 /* set the number of pipes */
-void setNumOfPipes(char *tokens[]) {
+void setNumOfPipes(char *tokens[])
+{
     int temp = 0;
     for (int i = 0; tokens[i] != NULL; i++) {
 	if (strcmp("|", tokens[i]) == 0) {
@@ -199,14 +215,16 @@ void setNumOfPipes(char *tokens[]) {
     numOfPipes = temp;
 }
 
-
+/* get the number of pipes */
+int getNumOfPipes(void)
+{
+    return numOfPipes;
+}
 
 /* return the number of pipes */
-int ispiped()
+int ispiped(void)
 {
-    /* TODO */
-    
-    return 0;
+    return getNumOfPipes() > 0;
 }
 
 /* the only parser needed in the shell loop.
@@ -239,7 +257,7 @@ int main(int argc, char *argv[])
 
     /* tokcml test */
     printf("\n\ntolcml test:\n\n");
-    char *input = "ls -alg | wc | cat | more";
+    char *input = "ls -alg   | wc | cat | more";
     char **tokens;
 
     tokcml(input, &tokens);
