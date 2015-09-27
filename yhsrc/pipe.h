@@ -1,9 +1,7 @@
 // Execute piped commands
 void cmdPiped(Program command[],
-              char* userInput,
               int numPipes,
               int dFlag) {
-
     int status;
     pid_t pid;
     // Create file descriptors according to 
