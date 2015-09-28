@@ -112,7 +112,7 @@ int tokcml(char *input, char **tokens[])
     char *token;
 
     if ((*tokens =  malloc(maxsize * sizeof(char*))) == NULL) {
-	fprintf(stderr, "error: memory allocation failed\n");
+	printerr(debugLevel, "error: memory allocation failed\n");
     }
     token = strtok(inputcpy, TOKENDELM);
 
@@ -150,7 +150,7 @@ int token_destroy(char *tokens[])
 /* print the error message if debug level is larger than 0 */
 void printerr(int debugLevel, char *errmsg) {
     if (debugLevel > 0) {
-	fprintf(stderr, "%s\n", errmsg);
+	fprintf(stderr, "%s", errmsg);
     }
 }
 

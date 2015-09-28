@@ -170,7 +170,7 @@ void dir_sish(int argc, char *argv[])
 void kill_sish(int argc, char *argv[])
 {
     if (argc < 2) {
-	fprintf(stderr, "usage: kill [-n signum] pid\n");
+	printerr(debugLevel, "usage: kill [-n signum] pid\n");
 	return;
     }
     long pid = atol(argv[argc - 1]);
@@ -179,7 +179,7 @@ void kill_sish(int argc, char *argv[])
 	signum = atoi(argv[1] + 1);
     }
     if (kill(pid, signum) == -1) {
-	fprintf(stderr, "kill failed\nsignal: %d, pid: %ld\n", signum, pid);
+	printerr(debugLevel, "kill failed\n");
     }
 }
 
@@ -188,6 +188,7 @@ void kill_sish(int argc, char *argv[])
 int isBuildIn(int argc, char *argv[])
 {
     if (argv[0] == NULL || argc == 0) {
+	printerr(debugLevel, "enter your command\n");
 	return 1;
     }
     if (!strcmp("history", argv[0])) {
