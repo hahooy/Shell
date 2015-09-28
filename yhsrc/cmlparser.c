@@ -244,7 +244,6 @@ int writeHistory(char *line)
 	cmdIndex++;
 	fprintf(historyptr, "%d %s", cmdIndex, line);
     } else {
-	printf("%s", repeatCmd);
 	repeatCmd[0] = '\0'; /* empty command buffer */
     }
 
@@ -263,6 +262,7 @@ int parse_input_line(void)
 
     /* get input from the command line if buffer is empty */
     if (strcmp(repeatCmd, "") == 0) {
+	fprintf(stdout, "sish >> ");
 	getline(&line, &linecap, stdin);
     } else {
 	line = strdup(repeatCmd);

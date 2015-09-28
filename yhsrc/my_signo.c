@@ -49,27 +49,22 @@ void sig_catch(int signo)
     case SIGINT:
 	printf(" catched SIGINT: %d\n", signo);
 	/* pass signal to child: kill(signo, fg_process_id); */
-	printf("sish >> ");
 	fflush(stdout);
 	break;
     case SIGQUIT:
 	printf(" catched SIGQUIT: %d\n", signo);
-	printf("sish >> ");
 	fflush(stdout);
 	break;
     case SIGCONT:
 	printf(" catched SIGQUIT: %d\n", signo);
-	printf("sish >> ");
 	fflush(stdout);
 	break;
     case SIGTSTP:
 	printf(" catched SIGTSTP: %d\n", signo);
-	printf("sish >> ");
 	fflush(stdout);
 	break;
     default:
 	printf(" other signals: %d\n", signo);
-	printf("sish >> ");
 	fflush(stdout);
 	break;
     }

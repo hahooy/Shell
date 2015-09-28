@@ -67,6 +67,7 @@ void repeat_sish(int argc, char *argv[])
 		fprintf(stderr, "repeat the repeat command is not allowed\n");
 	    } else {
 		strncpy(repeatCmd, line + 2, BUFFERSIZE);
+		printf("%s", repeatCmd);
 	    }
 	    break;
 	}
@@ -143,12 +144,8 @@ void show_sish(int argc, char *argv[])
 
 void help_sish(int argc, char *argv[])
 {
-    /* USING EXEC WILL KILL THE SHELL */
-    /* TODO */
-    char *ptr1 = "more";
-    char *ptr2 = "help";
-    char *more[] = {ptr1, ptr2};
-    execvp("more", more);
+    char *temp = "more help\n";
+    strncpy(repeatCmd, temp, BUFFERSIZE);
 }
 
 void dir_sish(int argc, char *argv[])
@@ -176,14 +173,14 @@ void kill_sish(int argc, char *argv[])
 	fprintf(stderr, "usage: kill [-n signum] pid\n");
 	return;
     }
-    int pid = atoi(argv[argc - 1]);
+    long pid = atol(argv[argc - 1]);
     int signum = 15; /* default is SIGTERM */
     if (argc == 3) {
 	signum = atoi(argv[1] + 1);
     }
-
-
-
+    if (kill(pid, signum) == -1) {
+	fprintf(stderr, "kill failed\nsignal: %d, pid: %ld\n", signum, pid);
+    }
 }
 
 /* check to see it the command is a build-in command
@@ -242,7 +239,7 @@ int isBuildIn(int argc, char *argv[])
 	/* TODO */
 	return 1;
     } else if (!strcmp("kill", argv[0])) {
-	/* TODO */
+	kill_sish(argc, argv);
 	return 1;
     }
     return 0;

@@ -1,6 +1,7 @@
 #include "shell.h"
 
 int init_var(void);
+int isInteractive(void);
 
 int main(int argc, char *argv[])
 {    
@@ -11,7 +12,6 @@ int main(int argc, char *argv[])
     fprintf(stdout, "The sish shell is now executing\n");
 
     for (;;) {
-	fprintf(stdout, "sish >> ");
 	parse_input_line();
 	if (isBuildIn(programs[0] -> argc, programs[0] -> argv)) {
 	    continue;
@@ -43,5 +43,9 @@ int init_var(void)
     historyptr = fopen("history", "w+");
     cmdIndex = 0;
     repeatCmd[0] = '\0';
+    return 0;
+}
+
+int isInteractive(void) {
     return 0;
 }
