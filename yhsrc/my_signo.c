@@ -1,4 +1,6 @@
-#include "my_signo.h"
+#include "shell.h"
+
+void sig_catch(int); /* signal handling for all signals */
 
 /* to initialize the signal functions, the sig_init function 
 needs to be called at the begining of the code execution */

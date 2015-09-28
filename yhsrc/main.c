@@ -2,8 +2,9 @@
 
 int main(int argc, char *argv[])
 {    
-    parsecml(argc, argv);
     int pid;
+    sig_init(); /* initialize signal functions */
+    parsecml(argc, argv);
     fprintf(stdout, "The sish shell is now executing\n");
 
     for (;;) {
@@ -15,11 +16,13 @@ int main(int argc, char *argv[])
 		cmdRedirection(programs[0], dflag);
 		execvp((programs[0] -> argv)[0], (programs[0] -> argv));
 		exit(1);
+	    } else {
+		while(wait(0) != pid);
 	    }
 	}else {
 	    cmdPiped(programs, getNumOfPipes(), dflag);
 	}
-	//while (wait(0) != pid);
+
     }
 }
 	

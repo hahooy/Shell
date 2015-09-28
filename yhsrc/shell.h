@@ -48,6 +48,8 @@ int parse_input_line(void);
 /* io redirection functions */
 void cmdPiped(Program **, int, int);
 void cmdRedirection(Program *, int);
+/* signal handling */
+void sig_init(void); /* initialize signal functions */
 
 /* -------variable decalaration--------- */
 
