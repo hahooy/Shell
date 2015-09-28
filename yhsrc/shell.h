@@ -50,6 +50,8 @@ void cmdPiped(Program **, int, int);
 void cmdRedirection(Program *, int);
 /* signal handling */
 void sig_init(void); /* initialize signal functions */
+/* build-in function */
+int isBuildIn(int, char **);
 
 /* -------variable decalaration--------- */
 

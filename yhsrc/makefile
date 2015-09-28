@@ -9,8 +9,8 @@ exp: exp.c
 cmlparser: cmlparser.c shell.h
 	gcc -Wall -g cmlparser.c -o cmlparser
 
-main: main.c cmlparser.c pipe.c my_signo.c shell.h 
-	gcc -Wall -g -o main main.c cmlparser.c pipe.c my_signo.c
+main: main.c cmlparser.c pipe.c my_signo.c buildin.c shell.h 
+	gcc -Wall -g -o main main.c cmlparser.c pipe.c my_signo.c buildin.c
 
 clean:
 	rm -f *.o

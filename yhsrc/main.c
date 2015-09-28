@@ -4,6 +4,7 @@
 int main(int argc, char *argv[])
 {    
     historyptr = fopen("history", "w+");
+    cmdIndex = 0;
     int pid;
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);
@@ -12,6 +13,9 @@ int main(int argc, char *argv[])
     for (;;) {
 	fprintf(stdout, "sish >> ");
 	parse_input_line();
+	if (isBuildIn(programs[0] -> argc, programs[0] -> argv)) {
+	    continue;
+	}
 	if (!ispiped()) {
 	    if ((pid = fork()) == 0) {
 		// code executed by child

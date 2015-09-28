@@ -237,7 +237,7 @@ int ispiped(void)
 }
 
 int writeHistory(char *line) {
-    historyptr = fopen("history", "ab+");
+
     cmdIndex++;
     if (historyptr == NULL) {
 	fprintf(stderr, "Can't open history file!\n");
@@ -245,7 +245,7 @@ int writeHistory(char *line) {
     }
     
     fprintf(historyptr, "%d %s", cmdIndex, line);
-    fclose(historyptr);
+    fflush(historyptr);
     return 0;
 }
 
