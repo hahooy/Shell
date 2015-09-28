@@ -48,6 +48,7 @@ int init_var(void)
     return 0;
 }
 
-int isInteractive(Program *pro) {    
+int isInteractive(Program *pro)
+{    
     return !(pro -> bg);
 }
