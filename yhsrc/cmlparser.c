@@ -116,7 +116,7 @@ int tokcml(char *input, char **tokens[])
     }
     token = strtok(inputcpy, TOKENDELM);
 
-    while (token != NULL) {
+    while (token != NULL && token[0] != '#') {
 	(*tokens)[cursize] = strdup(token);
 	cursize++;
 
