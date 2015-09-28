@@ -10,11 +10,13 @@
 #include <fcntl.h> /* needed for open */
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <dirent.h> /* needed for alphasort */
 
 /* -------macro definition--------- */
 
 #define MAXFILEARG 100  /* maximum number of arguments associated with input file */
 #define MAXTOKENS 1000  /* maximum number of tokens from command line input */
+#define BUFFERSIZE 1000 /* size of all buffer strings */
 #define MAXNUMOFPROS 4  /* maximum number of input programs */
 #define TOKENDELM " \t\n" /* delimiters for parsing the command line input */
 
@@ -65,3 +67,6 @@ char *batchfile;
 char *filearg[MAXFILEARG];
 Program *programs[MAXNUMOFPROS]; /* input programs */
 FILE *historyptr;
+char repeatCmd[BUFFERSIZE]; /* buffer for repeat command */
+extern char **environ;
+extern int alphasort(); //Inbuilt sorting function

@@ -1,13 +1,5 @@
 #include "shell.h"
 
-/* -------variable definition--------- */
-/* could be a bug */
-int numOfPipes = 0;
-int dflag = 0;
-int xflag = 0;
-int fflag = 0;
-int debugLevel = 0;
-
 /* -------function definition--------- */
 
 /* methods of program object */
@@ -236,15 +228,22 @@ int ispiped(void)
     return getNumOfPipes() > 0;
 }
 
-int writeHistory(char *line) {
-
-    cmdIndex++;
+int writeHistory(char *line)
+{
     if (historyptr == NULL) {
 	fprintf(stderr, "Can't open history file!\n");
 	exit(1);
     }
     
-    fprintf(historyptr, "%d %s", cmdIndex, line);
+    if (repeatCmd[0] == '\0') {
+	/* update history only when the command is from stdin */
+	cmdIndex++;
+	fprintf(historyptr, "%d %s", cmdIndex, line);
+    } else {
+	printf("%s", repeatCmd);
+	repeatCmd[0] = '\0'; /* empty command buffer */
+    }
+
     fflush(historyptr);
     return 0;
 }
@@ -254,12 +253,17 @@ It needs to be called at the begining of the
 loop. It construct all the arguments for programs*/
 int parse_input_line(void)
 {
-    /* TODO */
     char **tokens;
     char *line = NULL;
     size_t linecap = 0;
 
-    getline(&line, &linecap, stdin);  
+    /* get input from the command line if buffer is empty */
+    if (strcmp(repeatCmd, "") == 0) {
+	getline(&line, &linecap, stdin);
+    } else {
+	line = strdup(repeatCmd);
+    }
+    
     writeHistory(line);
     tokcml(line, &tokens);
     setNumOfPipes(tokens);

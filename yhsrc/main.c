@@ -1,11 +1,11 @@
 #include "shell.h"
 
+int init_var(void);
 
 int main(int argc, char *argv[])
 {    
-    historyptr = fopen("history", "w+");
-    cmdIndex = 0;
     int pid;
+    init_var();
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);
     fprintf(stdout, "The sish shell is now executing\n");
@@ -32,3 +32,16 @@ int main(int argc, char *argv[])
     }
 }
 	
+/* initialize global variable */
+int init_var(void)
+{
+    numOfPipes = 0;
+    dflag = 0;
+    xflag = 0;
+    fflag = 0;
+    debugLevel = 0;
+    historyptr = fopen("history", "w+");
+    cmdIndex = 0;
+    repeatCmd[0] = '\0';
+    return 0;
+}
