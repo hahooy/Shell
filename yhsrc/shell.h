@@ -29,12 +29,13 @@ typedef struct {
     int stdin_redirect;
     char *outfile;
     char *infile;
+    int bg;
 } Program;
 
 /* -------function prototype--------- */
 
 /* Program object methods */
-Program *Program_create(int, char **, int, int, char *, char *);
+Program *Program_create(int, char **, int, int, char *, char *, int);
 void Program_destroy(Program *);
 void Program_print(Program *);
 /* parser related functions */

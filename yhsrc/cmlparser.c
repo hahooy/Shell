@@ -3,7 +3,7 @@
 /* -------function definition--------- */
 
 /* methods of program object */
-Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile)
+Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_redirect, char *outfile, char *infile, int bg)
 {
     Program *p = malloc(sizeof(Program));
     assert(p != NULL);
@@ -18,6 +18,7 @@ Program *Program_create(int argc, char **argv, int stdout_redirect, int stdin_re
 	(p -> argv)[i] = strdup(argv[i]);
     }
     (p -> argv)[argc] = NULL;
+    p -> bg = bg;
 
     return p;
 }
@@ -43,6 +44,7 @@ void Program_print(Program *p)
     printf("stdin_redirect: %d\n", p -> stdin_redirect);
     printf("outfile: %s\n", p -> outfile);
     printf("infile: %s\n", p -> infile);
+    printf("bg: %d\n", p -> bg);
     for (int i = 0; i < p -> argc; i++) {
 	printf("argv[%d]: %s\n", i, (p -> argv)[i]);
     }    
@@ -164,6 +166,7 @@ int getArgs(char *tokens[])
     char *outfile = "";
     int stdin_redirect = 0;
     int stdout_redirect = 0;
+    int bg = 0;
     
     /* empty old programs */
     for (int i = 0; i < MAXNUMOFPROS; i++) {
@@ -178,13 +181,13 @@ int getArgs(char *tokens[])
 	    if (strcmp("|", tokens[i]) != 0) {
 		temp[position++] = tokens[i];
 	    } else {
-		Program *p = Program_create(position, temp, 0, 0, "", "");
+		Program *p = Program_create(position, temp, 0, 0, "", "", bg);
 		programs[numPro++] = p;
 		position = 0;
 	    }	    
 	}
 	/* the last program */
-	Program *p = Program_create(position, temp, 0, 0, "", "");
+	Program *p = Program_create(position, temp, 0, 0, "", "", bg);
 	programs[numPro] = p;
     } else {
 	position = 0;
@@ -195,12 +198,14 @@ int getArgs(char *tokens[])
 	    } else if (strcmp("<", tokens[i]) == 0) {
 		infile = tokens[++i];
 		stdin_redirect = 1;
-	    } else {
+	    } else if (strcmp("!", tokens[i]) == 0) {
+		bg = 1;
+	    }else {
 		temp[position++] = tokens[i];
 	    }
 	}
 	
-	Program *p = Program_create(position, temp, stdout_redirect, stdin_redirect, outfile, infile);
+	Program *p = Program_create(position, temp, stdout_redirect, stdin_redirect, outfile, infile, bg);
 	programs[0] = p;
     }
     assert(temp != NULL);

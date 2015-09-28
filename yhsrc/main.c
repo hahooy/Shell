@@ -1,7 +1,7 @@
 #include "shell.h"
 
 int init_var(void);
-int isInteractive(void);
+int isInteractive(Program *);
 
 int main(int argc, char *argv[])
 {    
@@ -23,7 +23,9 @@ int main(int argc, char *argv[])
 		execvp((programs[0] -> argv)[0], (programs[0] -> argv));
 		exit(1);
 	    } else {
-		while(wait(0) != pid);
+		if (isInteractive(programs[0])) {
+		    while(wait(0) != pid);
+		}
 	    }
 	}else {
 	    cmdPiped(programs, getNumOfPipes(), dflag);
@@ -46,6 +48,6 @@ int init_var(void)
     return 0;
 }
 
-int isInteractive(void) {
-    return 0;
+int isInteractive(Program *pro) {    
+    return !(pro -> bg);
 }
