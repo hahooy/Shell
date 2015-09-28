@@ -1,5 +1,7 @@
 #include "shell.h"
 
+/* all build-in commands are implemented in this file */
+
 void exit_sish(int argc, char *argv[])
 {
     fclose(historyptr);
@@ -75,6 +77,117 @@ void repeat_sish(int argc, char *argv[])
     fclose(fp);
 }
 
+void clr_sish(int argc, char *argv[])
+{
+    /* USED SYSTEM! */
+    system("clear");
+}
+
+void echo_sish(int argc, char *argv[])
+{
+    for (int i = 1; i < argc; i++) {
+	printf("%s ", argv[i]);
+    }
+    printf("\n");
+}
+
+void chdir_sish(int argc, char *argv[])
+{
+    if (argc < 2) {
+	fprintf(stderr, "usage: chdir path\n");
+	return;
+    }
+
+    if (chdir(argv[1]) == 0) {
+	setenv("PWD", argv[1], 1);
+	printf("directory changed to %s\n", argv[1]);
+    } else {
+	fprintf(stderr, "invalid path: %s\n", argv[1]);
+    }
+}
+    
+void environ_sish(int argc, char *argv[])
+{
+    int i = 0;
+    /* the last entry is '\0' */
+    while(environ[i]) {
+	printf("%s\n", environ[i]);
+	i++;
+    }    
+}
+
+void export_sish(int argc, char *argv[])
+{
+    if (argc < 3) {
+	fprintf(stderr, "usage: export name value\n");
+	return;
+    }
+    setenv(argv[1], argv[2], 1);
+}
+
+void unexport_sish(int argc, char *argv[])
+{
+    if (argc < 2) {
+	fprintf(stderr, "usage: unexport name\n");
+	return;
+    }
+    unsetenv(argv[1]);
+}
+
+void show_sish(int argc, char *argv[])
+{
+    for (int i = 1; i < argc; i++) {
+	printf("%s\n", argv[i]);
+    }
+}
+
+void help_sish(int argc, char *argv[])
+{
+    /* USING EXEC WILL KILL THE SHELL */
+    /* TODO */
+    char *ptr1 = "more";
+    char *ptr2 = "help";
+    char *more[] = {ptr1, ptr2};
+    execvp("more", more);
+}
+
+void dir_sish(int argc, char *argv[])
+{
+    DIR *dirp;
+    struct dirent *dp;
+
+    dirp = opendir(".");
+    if (dirp == NULL) {
+	fprintf(stderr, "error: could not open the current directory\n");
+	return;
+    }
+    while ((dp = readdir(dirp)) != NULL) {
+	if (strcmp(dp -> d_name, ".") && strcmp(dp -> d_name, "..")) {
+	    printf("%s  ", dp -> d_name);
+	}
+    }
+    closedir(dirp);
+    printf("\n");
+}
+
+void kill_sish(int argc, char *argv[])
+{
+    if (argc < 2) {
+	fprintf(stderr, "usage: kill [-n signum] pid\n");
+	return;
+    }
+    int pid = atoi(argv[argc - 1]);
+    int signum = 15; /* default is SIGTERM */
+    if (argc == 3) {
+	signum = atoi(argv[1] + 1);
+    }
+
+
+
+}
+
+/* check to see it the command is a build-in command
+   call the command if it exists */
 int isBuildIn(int argc, char *argv[])
 {
     if (argv[0] == NULL || argc == 0) {
@@ -88,6 +201,48 @@ int isBuildIn(int argc, char *argv[])
 	return 1;
     } else if (!strcmp("repeat", argv[0])) {
 	repeat_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("clear", argv[0])) {
+	clr_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("echo", argv[0])) {
+	echo_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("chdir", argv[0])) {
+	chdir_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("environ", argv[0])) {
+	environ_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("export", argv[0])) {
+	export_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("unexport", argv[0])) {
+	unexport_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("show", argv[0])) {
+	show_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("help", argv[0])) {
+	help_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("dir", argv[0])) {
+	dir_sish(argc, argv);
+	return 1;
+    } else if (!strcmp("set", argv[0])) {
+	/* TODO */
+	return 1;
+    } else if (!strcmp("unset", argv[0])) {
+	/* TODO */
+	return 1;
+    } else if (!strcmp("wait", argv[0])) {
+	/* TODO */
+	return 1;
+    } else if (!strcmp("pause", argv[0])) {
+	/* TODO */
+	return 1;
+    } else if (!strcmp("kill", argv[0])) {
+	/* TODO */
 	return 1;
     }
     return 0;
