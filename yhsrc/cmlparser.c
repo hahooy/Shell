@@ -92,6 +92,10 @@ void parsecml(int argc, char *argv[])
 	for (int i = 0; optind < argc; i++) {
 	    filearg[i] = argv[optind];
 	    optind++;
+	    if (i >= MAXFILEARG) {
+		fprintf(stderr, "entered too many input arguments, the maximum is 100");
+		break;
+	    }
 	}
     }
 }
@@ -244,7 +248,7 @@ int writeHistory(char *line)
 	repeatCmd[0] = '\0'; /* empty command buffer */
     }
 
-    fflush(historyptr);
+    fflush(historyptr); /* flush the buffer immediately */
     return 0;
 }
 
@@ -268,6 +272,7 @@ int parse_input_line(void)
     tokcml(line, &tokens);
     setNumOfPipes(tokens);
     getArgs(tokens);
+
     /* clean up */
     token_destroy(tokens);
     free(line);
