@@ -1,7 +1,9 @@
 #include "shell.h"
 
+
 int main(int argc, char *argv[])
 {    
+    historyptr = fopen("history", "w+");
     int pid;
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);

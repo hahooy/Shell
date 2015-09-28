@@ -58,6 +58,8 @@ int dflag;
 int xflag;
 int fflag;
 int debugLevel;
+int cmdIndex;
 char *batchfile;
 char *filearg[MAXFILEARG];
 Program *programs[MAXNUMOFPROS]; /* input programs */
+FILE *historyptr;
