@@ -1,4 +1,9 @@
 #include "shell.h"
+// #include <stdio.h>
+// #include <unistd.h>
+// #include <fcntl.h>
+// #include <sys/types.h>
+// #include <sys/stat.h>
 
 // Execute piped commands
 void cmdPiped(Program *command[],
@@ -25,7 +30,7 @@ void cmdPiped(Program *command[],
     // loop.  Because the parent process waits for 
     // all its children to finish, then can the parent 
     // process continue
-    for( int k = 0, j = 0; command[k] != '\0'; k++, j+=2){
+    for( int k = 0, j = 0; k < numPipes+1; k++, j+=2){
         pid = fork();//forking a new child on each loop
         if(pid == 0) {//child
 
@@ -51,7 +56,7 @@ void cmdPiped(Program *command[],
                 close(pipefds[i]);
             }
             // execute command
-            if( execvp(*command[k]->argv, command[k]->argv) < 0 ){
+            if( execvp((command[k]->argv)[0], command[k]->argv) < 0 ){
                 printerr(dFlag, "execvp error\n");
                 exit(1);
             }
