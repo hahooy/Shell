@@ -193,55 +193,40 @@ int isBuildIn(int argc, char *argv[])
     }
     if (!strcmp("history", argv[0])) {
 	history_sish(argc, argv);
-	return 1;
     } else if (!strcmp("exit", argv[0])) {
 	exit_sish(argc, argv);
-	return 1;
     } else if (!strcmp("repeat", argv[0])) {
 	repeat_sish(argc, argv);
-	return 1;
     } else if (!strcmp("clear", argv[0])) {
 	clr_sish(argc, argv);
-	return 1;
     } else if (!strcmp("echo", argv[0])) {
 	echo_sish(argc, argv);
-	return 1;
     } else if (!strcmp("chdir", argv[0])) {
 	chdir_sish(argc, argv);
-	return 1;
     } else if (!strcmp("environ", argv[0])) {
 	environ_sish(argc, argv);
-	return 1;
     } else if (!strcmp("export", argv[0])) {
 	export_sish(argc, argv);
-	return 1;
     } else if (!strcmp("unexport", argv[0])) {
 	unexport_sish(argc, argv);
-	return 1;
     } else if (!strcmp("show", argv[0])) {
 	show_sish(argc, argv);
-	return 1;
     } else if (!strcmp("help", argv[0])) {
 	help_sish(argc, argv);
-	return 1;
     } else if (!strcmp("dir", argv[0])) {
 	dir_sish(argc, argv);
-	return 1;
     } else if (!strcmp("set", argv[0])) {
 	/* TODO */
-	return 1;
     } else if (!strcmp("unset", argv[0])) {
 	/* TODO */
-	return 1;
     } else if (!strcmp("wait", argv[0])) {
 	/* TODO */
-	return 1;
     } else if (!strcmp("pause", argv[0])) {
 	/* TODO */
-	return 1;
     } else if (!strcmp("kill", argv[0])) {
 	kill_sish(argc, argv);
-	return 1;
+    } else {
+	return 0;
     }
-    return 0;
+    return 1;
 }
