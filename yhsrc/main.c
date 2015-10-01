@@ -2,11 +2,13 @@
 
 int init_var(void);
 int isInteractive(Program *);
+void init_shell_env(void);
 
 int main(int argc, char *argv[])
 {    
     int pid;
     init_var();
+    init_shell_env();/* initialize shell environment variable */
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);
     fprintf(stdout, "The sish shell is now executing\n");
@@ -51,4 +53,21 @@ int init_var(void)
 int isInteractive(Program *pro)
 {    
     return !(pro -> bg);
+}
+
+/* initialize shell environment variable */
+void init_shell_env(void){
+	long size;
+	char *buf;
+	char *ptr;
+
+	size = pathconf(".", _PC_PATH_MAX) + 6;
+
+	if ((buf = (char *)malloc((size_t)size)) != NULL){
+	    ptr = getcwd(buf, (size_t)size);    
+	    strncat(ptr, "/sish", 5);
+	    setenv("shell", ptr, 1); 
+	}else {
+		printerr(debugLevel, "init_shell_env() fail\n");
+	}
 }
