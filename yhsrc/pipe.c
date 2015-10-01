@@ -1,9 +1,4 @@
 #include "shell.h"
-// #include <stdio.h>
-// #include <unistd.h>
-// #include <fcntl.h>
-// #include <sys/types.h>
-// #include <sys/stat.h>
 
 // Execute piped commands
 void cmdPiped(Program *command[],
@@ -35,7 +30,7 @@ void cmdPiped(Program *command[],
         if(pid == 0) {//child
 
             //if not last command
-            if(command[k+1] != '\0'){
+            if(command[k+1] != NULL){
                 // copy pipe write end to stdout
                 if(dup2(pipefds[j + 1], 1) < 0){
                     printerr(dFlag, "dup2 error\n");

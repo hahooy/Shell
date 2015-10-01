@@ -16,7 +16,7 @@ void history_sish(int argc, char *argv[])
 	int lineNum = 0;
 
 	if (fp == NULL) {
-	    fprintf(stderr, "Failed to open file\n");	    
+	    printerr(debugLevel, "Failed to open file\n");	    
 	} 
 
 	if (argc == 1) {
@@ -48,7 +48,7 @@ void repeat_sish(int argc, char *argv[])
     FILE *fp = fopen("history", "r");    
 
     if (fp == NULL) {
-	fprintf(stderr, "could not open history file!\n");
+	printerr(debugLevel, "could not open history file!\n");
 	return;
     }
 
@@ -58,13 +58,13 @@ void repeat_sish(int argc, char *argv[])
     
     while ((linelen = getline(&line, &linecap, fp)) > 0) {
 	if (linelen >= BUFFERSIZE) {	    
-	    fprintf(stderr, "command is too long\n");
+	    printerr(debugLevel, "command is too long\n");
 	    break;
 	}
 	++curLineNum;
 	if (curLineNum == targetLineNum) {
 	    if (strcmp(line + 2, "repeat\n") == 0) {
-		fprintf(stderr, "repeat the repeat command is not allowed\n");
+		printerr(debugLevel, "repeat the repeat command is not allowed\n");
 	    } else {
 		strncpy(repeatCmd, line + 2, BUFFERSIZE);
 		printf("%s", repeatCmd);
@@ -94,16 +94,18 @@ void echo_sish(int argc, char *argv[])
 
 void chdir_sish(int argc, char *argv[])
 {
-    if (argc < 2) {
-	fprintf(stderr, "usage: chdir path\n");
+    if (argc < 2 || argc > 2) {
+	printerr(debugLevel, "usage: chdir path\n");
 	return;
     }
-
     if (chdir(argv[1]) == 0) {
 	setenv("PWD", argv[1], 1);
 	printf("directory changed to %s\n", argv[1]);
     } else {
-	fprintf(stderr, "invalid path: %s\n", argv[1]);
+    	size_t len = strlen("invalid path: ") + strlen(argv[1]) + 2;
+		char * buffer = malloc(len);
+		sprintf(buffer, "invalid path: %s\n", argv[1]);
+		printerr(debugLevel, buffer);
     }
 }
     
@@ -120,7 +122,7 @@ void environ_sish(int argc, char *argv[])
 void export_sish(int argc, char *argv[])
 {
     if (argc < 3) {
-	fprintf(stderr, "usage: export name value\n");
+	printerr(debugLevel, "usage: export name value\n");
 	return;
     }
     setenv(argv[1], argv[2], 1);
@@ -129,7 +131,7 @@ void export_sish(int argc, char *argv[])
 void unexport_sish(int argc, char *argv[])
 {
     if (argc < 2) {
-	fprintf(stderr, "usage: unexport name\n");
+	printerr(debugLevel, "usage: unexport name\n");
 	return;
     }
     unsetenv(argv[1]);
@@ -155,7 +157,7 @@ void dir_sish(int argc, char *argv[])
 
     dirp = opendir(".");
     if (dirp == NULL) {
-	fprintf(stderr, "error: could not open the current directory\n");
+	printerr(debugLevel, "error: could not open the current directory\n");
 	return;
     }
     while ((dp = readdir(dirp)) != NULL) {
@@ -197,7 +199,7 @@ int isBuildIn(int argc, char *argv[])
 	exit_sish(argc, argv);
     } else if (!strcmp("repeat", argv[0])) {
 	repeat_sish(argc, argv);
-    } else if (!strcmp("clear", argv[0])) {
+    } else if (!strcmp("clr", argv[0])) {
 	clr_sish(argc, argv);
     } else if (!strcmp("echo", argv[0])) {
 	echo_sish(argc, argv);
