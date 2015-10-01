@@ -146,7 +146,7 @@ void show_sish(int argc, char *argv[])
 
 void help_sish(int argc, char *argv[])
 {
-    char *temp = "more help\n";
+    char *temp = "more readme\n";
     strncpy(repeatCmd, temp, BUFFERSIZE);
 }
 

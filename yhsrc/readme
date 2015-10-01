@@ -1,0 +1,128 @@
+SISH
+
+NAME
+		SISH - Toy shell for CSE422
+
+SYNOPSIS
+		sish [-x] [-d <level>] [-f file [arg] ... ]
+
+COPYRIGHT
+		Feel free to use
+
+DESCRIPTION
+		Sish is a program that interprets commands that users type in and executes them. It acts as an interface between users and the underline operating system. The commands can be either an executable program or an internal command of sish. To start the sish, users will need to type in command:
+
+		sish [-x] [-d <level>] [-f file [arg] …]
+
+		where the square brackets ([ ]) indicate an optional word(s), and ”...” indicates 0 or more words. The options are:
+
+		-x: The command line after variable substitution is displayed before the command is evaluated.     
+
+		-d <DebugLevel>: Output debug messages. If DebugLevel=0, there will be no debug messages displayed. DebugLevel=1 means debug information will be displayed.
+
+		-f file [Arg] ...: Uses can use this flag to specify the input file of sish. When –f is specified, the shell runs in a batch mode where input is from the file instead of the terminal. The input file is a shell script, which contains a line of shell commands. No built-in control structures are supported in the shell command.
+
+		After the user start the shell, the shell then returns the prompt “sish >>” to the user. User then can type in the command following the prompt. The commands consist of the name of the program and possibly some arguments. Arguments should be separated by one or more white space.
+
+		In the UNIX environment, most programs take input from the standard input, i.e. the keyboard, and many of them write output to the standard output, i.e. the terminal screen. In sish, users can redirect the input using the symbol “<” and the output using the symbol “>”. Users can also use a pipe to connect the output of a command to the input of another command. The symbol for a pipe is “|”. One example of piping is:
+
+		sish >> who | wc –l
+
+		In this command, the pipe sends the output of who command to the input of the wc command.
+
+		If the –f is specified when starting the shell, the shell will run in the batch mode, meaning the shell will execute all commands in the script file and exits when it reach the end of the file.
+
+
+OPTIONS
+		-x: The command line after variable substitution is displayed before the command is evaluated.
+
+		-d <DebugLevel>: Output debug messages. DebugLevel=0 means don’t output any debug messages. DebugLevel=1 outputs enough information so that correct operation can be verified.  Larger integers can be used as the user sees fit to indicate more detailed debug messages.
+
+		-f file [Arg] ...: Input is from a file instead of stdin; i.e., File is a shell script. If there are arguments, the strings are assigned to the shell variables $1, $2, etc. The location of File follows the rules described in Search Path below
+
+REFERENCE
+		The next sections of this manual describe all of the available Builtin commands, Special aliases and Special  shell  vari-ables.
+
+		In the description below, W stands for a single word. A whitespace character (SPACE or TAB) or a
+		newline character terminates a word. ”...” indicates a continuation of 0 or more repetitions of the
+		preceding symbol. For example, ”W ...” means one or more W’s. I stands for a particular type of word
+		that is an integer. In cases where the ordinal position of a word is important, we will use W1, W2, ... to mean Word1, Word2. Also, a word can be a variable and should be substituted as noted in the “Variable Substitution” section below.
+		
+
+		show W1 W2 … : display the word(s) followed by a newline
+
+		set W1 W2: set the value of the local variable W1 to the value W1
+
+		unset W1: un set a previously set local variable W1
+		
+		export W1 W2: export the global variable W1 with the value W2 to the environment
+		
+		unexport W: unexport the global variable W from the environment
+		
+		environ: this command should display to the terminal a listing of all environment strings that
+		are currently defined
+
+		chdir W: change the current directory 
+
+		exit I: exit the shell and return status I. If no value for I is given, the shell should exit with a
+		status code of 0. You should also ensure that any currently running processes are killed off before the shell exits.
+
+		wait I: the shell waits for process I (a pid) to complete. If I is -1, the shell waits for any children to complete. Note that you can't wait on grandchildren.
+
+		clr: clear the screen and display a new command line prompt at the top
+
+		dir: list the contents of the current directory
+
+		echo <comment>: display <comment> on the display followed by a new line
+
+		help: display the user manual using the more filter
+
+		pause: pause the operation of the shell until the ‘Enter’ key is pressed
+
+		history n: this command should list to the display the last n executed commands (i.e., those
+		that you entered at the command line prompt, even if the command fails or can’t be found). If
+		your shell executed less than n commands, then your shell should just display all of these
+		commands. if n is not specified, then you should display all of the previous commands (you may
+		assume that you only have to keep track of the last 100 commands issued). Each line of the
+		output of history should contain a line number followed by two spaces followed by the input to
+		the command line prompt. In other words, it should look something like the following:
+		1 ls -alg
+		2 date
+		3 who
+		4 cd /usr/local
+
+		In this list, line 1 is the oldest command in the history list, and the last line n is the most recent
+		command in the list. You should do a man history to get more information about how the UNIX
+		csh version of history works.
+
+		repeat n: prints to the screen, and then executes the command in the history list which
+		corresponds to the nth line. If n is not specified, then repeat should execute the previous
+		command (i.e., the one which currently has the highest history list number).
+		
+		kill [-n] pid: this command should send a signal to the specified process. For example, if you do
+		the following sequence of commands:
+
+		sish >> ps –aef
+
+		UID PID PPID C STIME TTY TIME CMD
+		root 0 0 0 Jan 11 ? 0:01 sched
+		root 1 0 0 Jan 11 ? 4:49 /etc/init -
+		root 2 0 0 Jan 11 ? 0:03 pageout
+		root 3 0 0 Jan 11 ? 142:17 fsflush
+		root 418 415 0 Jan 11 ? 5:07 usr/lib/saf/listen tcp
+		root 244 1 0 Jan 11 ? 0:28 /usr/sbin/cron
+		root 415 1 0 Jan 11 ? 0:00 /usr/lib/saf/sac -t 300
+		root 137 1 0 Jan 11 ? 0:00 /usr/sbin/keyserv
+		root 161 1 0 Jan 11 ? 0:26 usr/lib/netsvc/yp/ypbind
+		root 169 1 0 Jan 11 ? 0:00 usr/lib/netsvc/yp/ypxfrd
+		root 176 1 0 Jan 11 ? 0:00 /usr/sbin/kerbd
+		lmiller 329 1 0 Jan 11 ? 0:01 /usr/home/lmiller/shell/sish
+		lmiller 372 329 0 Jan 11 ? 0:04 /usr/home/lmiller/myprog/myprog
+
+		sish>> kill –9 372
+		
+		then the SIGKILL signal should be sent to process number 372. The format of this command is
+		“kill –<signal #> <PID>”, where signal # is the numeric id associated with the signal to be sent,
+		and PID is the process ID number. If the signal # is not specified, then the kill command should
+		send the SIGTERM signal by default. See the man pages for signal in order to learn about the
+		various signal numbers (i.e., issue man –s 5 signal).
