@@ -152,18 +152,17 @@ void help_sish(int argc, char *argv[])
 
 void dir_sish(int argc, char *argv[])
 {
-    DIR *dirp;
-	struct dirent *dp;
-
-	dirp = opendir(".");
-	if (dirp == NULL) {
-		printerr(debugLevel, "error: could not open the current directory\n");
-	return;
-    }
-	while((dp = readdir(dirp)) != NULL){
-		printf("%s\n", dp -> d_name);
-	}
-	closedir(dirp);
+ 	struct dirent **namelist;
+	int n = scandir(".", &namelist, 0, alphasort);
+    if (n < 0)
+        perror("scandir");
+    else {
+        for (int i = 0; i < n; i++) {
+            printf("%s\n", namelist[i]->d_name);
+            free(namelist[i]);
+            }
+        }
+    free(namelist);
 }
 
 void kill_sish(int argc, char *argv[])
