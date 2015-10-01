@@ -80,8 +80,8 @@ void repeat_sish(int argc, char *argv[])
 
 void clr_sish(int argc, char *argv[])
 {
-    /* USED SYSTEM! */
-    system("clear");
+	for (int i = 0; i < 50; i++ )
+    	putchar ( '\n' );
 }
 
 void echo_sish(int argc, char *argv[])
@@ -153,20 +153,17 @@ void help_sish(int argc, char *argv[])
 void dir_sish(int argc, char *argv[])
 {
     DIR *dirp;
-    struct dirent *dp;
+	struct dirent *dp;
 
-    dirp = opendir(".");
-    if (dirp == NULL) {
-	printerr(debugLevel, "error: could not open the current directory\n");
+	dirp = opendir(".");
+	if (dirp == NULL) {
+		printerr(debugLevel, "error: could not open the current directory\n");
 	return;
     }
-    while ((dp = readdir(dirp)) != NULL) {
-	if (strcmp(dp -> d_name, ".") && strcmp(dp -> d_name, "..")) {
-	    printf("%s  ", dp -> d_name);
+	while((dp = readdir(dirp)) != NULL){
+		printf("%s\n", dp -> d_name);
 	}
-    }
-    closedir(dirp);
-    printf("\n");
+	closedir(dirp);
 }
 
 void kill_sish(int argc, char *argv[])
@@ -183,6 +180,13 @@ void kill_sish(int argc, char *argv[])
     if (kill(pid, signum) == -1) {
 	printerr(debugLevel, "kill failed\n");
     }
+}
+
+void pause_sish(int argc, char *argv[]){
+	//fprintf(stdout, "sish >> ");
+	while(getchar() != '\n');
+	// fflush(stdout);
+	// pause();
 }
 
 /* check to see it the command is a build-in command
@@ -224,7 +228,7 @@ int isBuildIn(int argc, char *argv[])
     } else if (!strcmp("wait", argv[0])) {
 	/* TODO */
     } else if (!strcmp("pause", argv[0])) {
-	/* TODO */
+	pause_sish(argc, argv);
     } else if (!strcmp("kill", argv[0])) {
 	kill_sish(argc, argv);
     } else {
