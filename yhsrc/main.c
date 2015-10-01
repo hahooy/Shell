@@ -2,10 +2,12 @@
 
 int init_var(void);
 int isInteractive(Program *);
+char *shellcommand; /* store argv[0], the command to invoke sish */
 
 int main(int argc, char *argv[])
 {    
     int pid;
+    shellcommand = argv[0];
     init_var();
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);
@@ -24,6 +26,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	    } else {
 		if (isInteractive(programs[0])) {
+		    fg_process_id = pid;
 		    while(wait(0) != pid);
 		}
 	    }
@@ -45,6 +48,17 @@ int init_var(void)
     historyptr = fopen("history", "w+");
     cmdIndex = 0;
     repeatCmd[0] = '\0';
+    shellpath = malloc(BUFFERSIZE * sizeof(char));
+
+    /* define the environment variable: shell */
+    getcwd(shellpath, BUFFERSIZE);
+    if (shellcommand[0] == '.') {
+	shellpath = strncat(shellpath, "/sish", 6);
+    } else {
+	shellpath = strncat(shellpath, "/", 2);
+	shellpath = strncat(shellpath, shellcommand, BUFFERSIZE / 2);
+    }
+    setenv("shell", shellpath, 1);
     return 0;
 }
 

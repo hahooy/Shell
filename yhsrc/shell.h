@@ -64,10 +64,12 @@ int xflag;
 int fflag;
 int debugLevel;
 int cmdIndex;
+int fg_process_id; /* pid of the foreground program */
 char *batchfile;
 char *filearg[MAXFILEARG];
 Program *programs[MAXNUMOFPROS]; /* input programs */
 FILE *historyptr;
 char repeatCmd[BUFFERSIZE]; /* buffer for repeat command */
+char *shellpath;
 extern char **environ;
 extern int alphasort(); //Inbuilt sorting function
