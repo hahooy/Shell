@@ -312,10 +312,7 @@ void kill_sish(int argc, char *argv[])
 }
 
 void pause_sish(int argc, char *argv[]){
-	//fprintf(stdout, "sish >> ");
 	while(getchar() != '\n');
-	// fflush(stdout);
-	// pause();
 }
 
 /* check to see it the command is a build-in command
