@@ -59,6 +59,8 @@ int isBuildIn(int, char **);
 void set_foreground_return_value(int);
 void set_shell_pid(void);
 void set_background_pid(int background_pid);
+void init_localVar();
+void replaceVar_sish(char *argv[]);
 
 /* -------variable decalaration--------- */
 

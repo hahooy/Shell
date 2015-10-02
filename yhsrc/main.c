@@ -67,6 +67,9 @@ int init_var(void)
     }
     setenv("shell", shellpath, 1);
     set_shell_pid();
+    //initialize the array of var structs
+    init_localVar();
+
     return 0;
 }
 
