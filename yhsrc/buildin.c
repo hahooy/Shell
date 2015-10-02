@@ -2,10 +2,42 @@
 
 /* all build-in commands are implemented in this file */
 
+/* function prototypes */
+
+void exit_sish(int argc, char *argv[]);
+void cleanup_sish(void);
+void history_sish(int argc, char *argv[]);
+void repeat_sish(int argc, char *argv[]);
+void clr_sish(int argc, char *argv[]);
+void echo_sish(int argc, char *argv[]);
+void chdir_sish(int argc, char *argv[]);
+void environ_sish(int argc, char *argv[]);
+void export_sish(int argc, char *argv[]);
+void unexport_sish(int argc, char *argv[]);
+void show_sish(int argc, char *argv[]);
+void help_sish(int argc, char *argv[]);
+void dir_sish(int argc, char *argv[]);
+void kill_sish(int argc, char *argv[]);    
+void pause_sish(int argc, char *argv[]);  
+int isBuildIn(int argc, char *argv[]);
+
+/* function definition */
+
 void exit_sish(int argc, char *argv[])
 {
-    fclose(historyptr);
+    /* clean up the memory */
+    cleanup_sish();
     exit(0);
+}
+
+/* a helper function to clean up the program before exit */
+void cleanup_sish(void)
+{    
+    if (fclose(historyptr) != 0) {
+	fprintf(stderr, "fail to close the history file\n");
+    }
+    assert(shellpath != NULL);
+    free(shellpath);
 }
 
 void history_sish(int argc, char *argv[])

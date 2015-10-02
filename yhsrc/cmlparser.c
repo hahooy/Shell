@@ -267,7 +267,7 @@ int parse_input_line(void)
 
     /* get input from the command line if buffer is empty */
     if (strcmp(repeatCmd, "") == 0) {
-	fprintf(stdout, "sish >> ");
+	fprintf(stdout, "%s >> ", shellpath);
 	getline(&line, &linecap, stdin);
     } else {
 	line = strdup(repeatCmd);

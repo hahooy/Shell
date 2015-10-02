@@ -48,7 +48,8 @@ void sig_catch(int signo)
     switch (signo) {
     case SIGINT:
 	printf(" catched SIGINT: %d\n", signo);
-	/* pass signal to child: kill(signo, fg_process_id); */
+	kill(signo, fg_process_id);
+	printf("signal has been passed to %d\n", fg_process_id);
 	fflush(stdout);
 	break;
     case SIGQUIT:
