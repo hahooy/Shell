@@ -70,8 +70,10 @@ void cmdPiped(Program *command[],
         close(pipefds[i]);
     }
     //Parent wait for children
-    for(int i = 0; i < numPipes + 1; i++)
+    for(int i = 0; i < numPipes + 1; i++) {
         wait(&status);
+	set_foreground_return_value(status);
+    }
 }
 
 // Execute redirection commands

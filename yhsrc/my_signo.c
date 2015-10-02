@@ -48,6 +48,7 @@ void sig_init(void)
 // signal handler
 void sig_catch(int signo)
 {
+
     switch (signo) {
     case SIGINT:
 	printf(" catched SIGINT: %d\n", signo);

@@ -267,14 +267,20 @@ int parse_input_line(void)
 
     /* get input from the command line if buffer is empty */
     if (strcmp(repeatCmd, "") == 0) {
-	fprintf(stdout, "%s >> ", shellpath);
+	fprintf(stdout, "sish >> ");
 	getline(&line, &linecap, stdin);
+
     } else {
 	line = strdup(repeatCmd);
     }
     
     writeHistory(line);
     tokcml(line, &tokens);
+
+    replaceVar_sish(tokens);
+
+
+    
     setNumOfPipes(tokens);
     getArgs(tokens);
 
