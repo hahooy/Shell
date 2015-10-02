@@ -40,6 +40,9 @@ void sig_init(void)
     if (signal(SIGUSR2, SIG_IGN) == SIG_ERR) {
 	fprintf(stderr, "Can't catch SIGUSR2");
     }
+    if (signal(SIGCHLD, sig_catch) == SIG_ERR) {
+    fprintf(stderr, "Can't catch SIGCHLD");
+    }
 }
 
 // signal handler
@@ -64,10 +67,25 @@ void sig_catch(int signo)
 	printf(" catched SIGTSTP: %d\n", signo);
 	fflush(stdout);
 	break;
+    case SIGCHLD:{
+        int pid;
+        int status;
+        while ((pid = wait(&status)) > 0)
+        {
+            printf("Exit status of %d was %d (%s)\n", (int)pid, status,
+                  (status > 0) ? "accept" : "reject");
+            printf("reached 0\n");
+        }
+        printf(" catched SIGCHLD: %d\n", signo);
+        fflush(stdout);
+        printf("reached 1\n");
+        break;
+    }
     default:
 	printf(" other signals: %d\n", signo);
 	fflush(stdout);
 	break;
     }
+    printf("reached 2\n");
     return;
 }
