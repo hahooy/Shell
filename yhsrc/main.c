@@ -63,6 +63,8 @@ int init_var(void)
 	shellpath = strncat(shellpath, shellcommand, BUFFERSIZE / 2);
     }
     setenv("shell", shellpath, 1);
+    //initialize the array of var structs
+    init_localVar();
     return 0;
 }
 

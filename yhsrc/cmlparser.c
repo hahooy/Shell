@@ -269,12 +269,18 @@ int parse_input_line(void)
     if (strcmp(repeatCmd, "") == 0) {
 	fprintf(stdout, "%s >> ", shellpath);
 	getline(&line, &linecap, stdin);
+
     } else {
 	line = strdup(repeatCmd);
     }
     
     writeHistory(line);
     tokcml(line, &tokens);
+
+    replaceVar_sish(tokens);
+
+
+    
     setNumOfPipes(tokens);
     getArgs(tokens);
 

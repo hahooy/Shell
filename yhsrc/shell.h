@@ -55,6 +55,8 @@ void cmdRedirection(Program *, int);
 void sig_init(void); /* initialize signal functions */
 /* build-in function */
 int isBuildIn(int, char **);
+void init_localVar();
+void replaceVar_sish(char *argv[]);
 
 /* -------variable decalaration--------- */
 
