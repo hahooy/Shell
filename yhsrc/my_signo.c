@@ -40,9 +40,6 @@ void sig_init(void)
     if (signal(SIGUSR2, SIG_IGN) == SIG_ERR) {
 	printerr(debugLevel, "Can't catch SIGUSR2");
     }
-    if (signal(SIGCHLD, sig_catch) == SIG_ERR) {
-    printerr(debugLevel, "Can't catch SIGCHLD");
-    }
 }
 
 // signal handler
@@ -68,10 +65,6 @@ void sig_catch(int signo)
 	printf(" catched SIGTSTP: %d\n", signo);
 	fflush(stdout);
 	break;
-    case SIGCHLD:
-    printf(" catched SIGCHLD: %d\n", signo);
-    fflush(stdout);
-    break;
     default:
 	printf(" other signals: %d\n", signo);
 	fflush(stdout);

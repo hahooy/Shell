@@ -23,6 +23,7 @@ int isBuildIn(int argc, char *argv[]);
 int findVar(char* search_key);
 void set_sish(int argc, char *argv[]);
 void unset_sish(int argc, char *argv[]);
+
 /* function definition */
 
 
@@ -94,17 +95,17 @@ void replaceVar_sish(char *argv[]){
     for (int i=1; argv[i] != NULL; ++i){
         //if the argument has a dollar sign in front of it
 	if(argv[i][0] == '$'){
-	    char* target_key = malloc(BUFFERSIZE*sizeof(char));
-	    strncpy(target_key, argv[i]+1, strlen(argv[i])-1);
+	    char *target_key = malloc(BUFFERSIZE * sizeof(char));
+	    strncpy(target_key, argv[i]+1, BUFFERSIZE);
+
 	    //overwrite the variable with its value stored in map
 	    if(findVar(target_key) == 0){
 		//if the key is found then overwrite the variable with that key
 		strncpy(argv[i], target_key, strlen(argv[i]));
-	    }else{
-		//if the key is not found in the struct array
-		//keep its previous string 
-		continue;
+			
 	    }
+	    
+	    free(target_key);
 	}
     }	
 }
@@ -143,12 +144,27 @@ void exit_sish(int argc, char *argv[])
 /* a helper function to clean up the program before exit */
 void cleanup_sish(void)
 {    
+    /* close open history file */
     if (fclose(historyptr) != 0) {
 	printerr(debugLevel, "fail to close the history file\n");
 	return;
     }
+
+    /* free string variables */
     assert(shellpath != NULL);
     free(shellpath);
+    
+    /* free the memory space for the array storing local variables */
+    if (variables != NULL) {
+	free(variables);
+    }
+
+    /* free created program structs */
+    for (int i = 0; i < MAXNUMOFPROS; i++) {
+	if (programs[i] != NULL) {
+	    Program_destroy(programs[i]);
+	}
+    }
 }
 
 void wait_sish(int argc, char*argv[])
