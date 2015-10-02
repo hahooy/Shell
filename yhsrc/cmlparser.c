@@ -57,7 +57,7 @@ void parsecml(int argc, char *argv[])
     extern char *optarg;
     extern int optind;
     int c, err = 0;
-    char *usage = "usage: sish [-x] [-d <level>] [-f file [arg] ...]";
+    char *usage = "usage: sish [-x] [-d <level>] [-f file [arg] ...]\n";
 
     while ((c = getopt(argc, argv, "xd:f:")) != -1) {
 	switch (c) {
@@ -66,14 +66,14 @@ void parsecml(int argc, char *argv[])
 	    break;
 	case 'd':
 	    if (dflag == 1) {
-		fprintf(stderr, "Error: -d has been set already\n");
+		printerr(debugLevel, "Error: -d has been set already\n");
 	    }
 	    dflag = 1;
 	    debugLevel = atoi(optarg);
 	    break;
 	case 'f':
 	    if (fflag == 1) {
-		fprintf(stderr, "Error: -f has been set already\n");
+		printerr(debugLevel, "Error: -f has been set already\n");
 	    }
 	    fflag = 1;
 	    batchfile = optarg;
@@ -85,7 +85,7 @@ void parsecml(int argc, char *argv[])
 	    break;
 	}
 	if (err) {
-	    fprintf(stderr, "%s\n", usage);
+	    printerr(debugLevel, usage);
 	    exit(1);
 	}	
     }
@@ -95,7 +95,7 @@ void parsecml(int argc, char *argv[])
 	    filearg[i] = argv[optind];
 	    optind++;
 	    if (i >= MAXFILEARG) {
-		fprintf(stderr, "entered too many input arguments, the maximum is 100");
+		printerr(debugLevel, "entered too many input arguments, the maximum is 100\n");
 		break;
 	    }
 	}
@@ -123,7 +123,7 @@ int tokcml(char *input, char **tokens[])
 	if (cursize >= maxsize) {
 	    maxsize *= 2;
 	    if ((*tokens = realloc(*tokens, maxsize * sizeof(char *))) == NULL) {
-		fprintf(stderr, "error: memory allocation failed\n");
+		printerr(debugLevel, "error: memory allocation failed\n");
 	    }
 	}
 	
@@ -240,7 +240,7 @@ int ispiped(void)
 int writeHistory(char *line)
 {
     if (historyptr == NULL) {
-	fprintf(stderr, "Can't open history file!\n");
+	printerr(debugLevel, "Can't open history file!\n");
 	exit(1);
     }
     

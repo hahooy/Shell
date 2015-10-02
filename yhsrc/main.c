@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     init_var();
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);
-    fprintf(stdout, "The sish shell is now executing\n");
+    printerr(debugLevel, "The sish shell is now executing\n");
 
     for (;;) {
 	parse_input_line();
