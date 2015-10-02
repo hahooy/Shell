@@ -55,6 +55,10 @@ void cmdRedirection(Program *, int);
 void sig_init(void); /* initialize signal functions */
 /* build-in function */
 int isBuildIn(int, char **);
+/* environment variable setter */
+void set_foreground_return_value(int);
+void set_shell_pid(void);
+void set_background_pid(int background_pid);
 
 /* -------variable decalaration--------- */
 

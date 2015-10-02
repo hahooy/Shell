@@ -1,9 +1,14 @@
+#include "shell.h"
+
 // updates 
 // shell PID, 
 // decimal value returned by the last 
 // foreground command PID
-void environmentVariablesSetUp(int cmd_exit_status,
-							   int background_pid)
+void set_shell_pid(void);
+void set_foreground_return_value(int cmd_exit_status);
+void set_background_pid(int background_pid);
+
+void environmentVariablesSetUp(int cmd_exit_status, int background_pid)
 {
 	// $$: PID of this shell
 	// $?: Decimal value returned by the last foreground command
