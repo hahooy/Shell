@@ -43,6 +43,10 @@ void init_localVar(){
 }
 
 void set_sish(int argc, char *argv[]){
+    if (argc < 3) {
+	printerr(debugLevel, "usage: set name value\n");
+	return;
+    }
 	int emptySpot = 0;
 	int exists = 0;
 	for (int i = 0; i < 100; ++i) {
@@ -70,6 +74,10 @@ void set_sish(int argc, char *argv[]){
 
 //a function to unset the variable
 void unset_sish(int argc, char *argv[]){
+    if (argc < 2) {
+	printerr(debugLevel, "usage: set name\n");
+	return;
+    }
 	for (int i = 0; i < 100; ++i) {
         	//go over the struct array and set the empty flag 
         	//of the struct with found key to 1
@@ -123,19 +131,33 @@ int findVar(char* search_key){
 
 void exit_sish(int argc, char *argv[])
 {
+    int status = 0;
+    if (argc > 1) {
+	status = atoi(argv[1]);
+    }
     /* clean up the memory */
-	cleanup_sish();
-	exit(0);
+    cleanup_sish();
+    exit(status);
 }
 
 /* a helper function to clean up the program before exit */
 void cleanup_sish(void)
 {    
 	if (fclose(historyptr) != 0) {
-		fprintf(stderr, "fail to close the history file\n");
+	    printerr(debugLevel, "fail to close the history file\n");
+	    return;
 	}
 	assert(shellpath != NULL);
 	free(shellpath);
+}
+
+void wait_sish(int argc, char*argv[])
+{
+    if (argc < 2) {
+	printerr(debugLevel, "usage: wait I\n");
+	return;
+    }
+    waitpid(atoi(argv[1]), 0, 0);
 }
 
 void history_sish(int argc, char *argv[])
@@ -349,12 +371,10 @@ int isBuildIn(int argc, char *argv[])
 		dir_sish(argc, argv);
 	} else if (!strcmp("set", argv[0])) {
 		set_sish(argc, argv);
-	/* TODO */
 	} else if (!strcmp("unset", argv[0])) {
 		unset_sish(argc, argv);
-	/* TODO */
 	} else if (!strcmp("wait", argv[0])) {
-	/* TODO */
+	    wait_sish(argc, argv);
 	} else if (!strcmp("pause", argv[0])) {
 		pause_sish(argc, argv);
 	} else if (!strcmp("kill", argv[0])) {

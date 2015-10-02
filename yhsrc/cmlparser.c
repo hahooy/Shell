@@ -276,9 +276,14 @@ int parse_input_line(void)
     
     writeHistory(line);
     tokcml(line, &tokens);
-
     replaceVar_sish(tokens);
 
+    if (xflag == 1) {
+	for (int i = 0; tokens[i] != NULL; i++) {
+	    printf("%s ", tokens[i]);
+	}
+	printf("\n");
+    }
 
     
     setNumOfPipes(tokens);
