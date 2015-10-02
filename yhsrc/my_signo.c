@@ -10,38 +10,38 @@ void sig_init(void)
 {
     /* signals to be catch */
     if (signal(SIGINT, sig_catch) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGINT");
+	printerr(debugLevel, "Can't catch SIGINT");
     }
     if (signal(SIGQUIT, sig_catch) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGQUIT");
+	printerr(debugLevel, "Can't catch SIGQUIT");
     }
     if (signal(SIGCONT, sig_catch) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGCONT");
+	printerr(debugLevel, "Can't catch SIGCONT");
     }
     if (signal(SIGTSTP, sig_catch) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGTSTP");
+	printerr(debugLevel, "Can't catch SIGTSTP");
     }
     /* signals to be ignored */
     if (signal(SIGABRT, SIG_IGN) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGABRT");
+	printerr(debugLevel, "Can't catch SIGABRT");
     }
     if (signal(SIGALRM, SIG_IGN) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGALRM");
+	printerr(debugLevel, "Can't catch SIGALRM");
     }
     if (signal(SIGHUP, SIG_IGN) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGHUP");
+	printerr(debugLevel, "Can't catch SIGHUP");
     }
     if (signal(SIGTERM, SIG_IGN) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGTERM");
+	printerr(debugLevel, "Can't catch SIGTERM");
     }
     if (signal(SIGUSR1, SIG_IGN) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGUSR1");
+	printerr(debugLevel, "Can't catch SIGUSR1");
     }
     if (signal(SIGUSR2, SIG_IGN) == SIG_ERR) {
-	fprintf(stderr, "Can't catch SIGUSR2");
+	printerr(debugLevel, "Can't catch SIGUSR2");
     }
     if (signal(SIGCHLD, sig_catch) == SIG_ERR) {
-    fprintf(stderr, "Can't catch SIGCHLD");
+    printerr(debugLevel, "Can't catch SIGCHLD");
     }
 }
 
@@ -68,25 +68,14 @@ void sig_catch(int signo)
 	printf(" catched SIGTSTP: %d\n", signo);
 	fflush(stdout);
 	break;
-    case SIGCHLD:{
-        int pid;
-        int status;
-        while ((pid = wait(&status)) > 0)
-        {
-            printf("Exit status of %d was %d (%s)\n", (int)pid, status,
-                  (status > 0) ? "accept" : "reject");
-            printf("reached 0\n");
-        }
-        printf(" catched SIGCHLD: %d\n", signo);
-        fflush(stdout);
-        printf("reached 1\n");
-        break;
-    }
+    case SIGCHLD:
+    printf(" catched SIGCHLD: %d\n", signo);
+    fflush(stdout);
+    break;
     default:
 	printf(" other signals: %d\n", signo);
 	fflush(stdout);
 	break;
     }
-    printf("reached 2\n");
     return;
 }
