@@ -40,6 +40,10 @@ void sig_init(void)
     if (signal(SIGUSR2, SIG_IGN) == SIG_ERR) {
 	printerr(debugLevel, "Can't catch SIGUSR2");
     }
+    /* signal from dead child */
+    if (signal(SIGCHLD, sig_catch) == SIG_ERR) {
+	printerr(debugLevel, "Can't catch SIGCHLD");
+    }
 }
 
 // signal handler
@@ -48,25 +52,28 @@ void sig_catch(int signo)
 
     switch (signo) {
     case SIGINT:
-	printf(" catched SIGINT: %d\n", signo);
-	kill(signo, fg_process_id);
-	printf("signal has been passed to %d\n", fg_process_id);
+	printerr(debugLevel, " catched SIGINT\n");
 	fflush(stdout);
 	break;
     case SIGQUIT:
-	printf(" catched SIGQUIT: %d\n", signo);
+	printerr(debugLevel, " catched SIGQUIT\n");
 	fflush(stdout);
 	break;
     case SIGCONT:
-	printf(" catched SIGQUIT: %d\n", signo);
+	printerr(debugLevel, " catched SIGQUIT\n");
 	fflush(stdout);
 	break;
     case SIGTSTP:
-	printf(" catched SIGTSTP: %d\n", signo);
+	printerr(debugLevel, " catched SIGTSTP\n");
+	fflush(stdout);
+	break;
+    case SIGCHLD:
+	printerr(debugLevel, " catched SIGCHLD\n");
+	waitpid(0, 0, WNOHANG);
 	fflush(stdout);
 	break;
     default:
-	printf(" other signals: %d\n", signo);
+	printerr(debugLevel, " other signals\n");
 	fflush(stdout);
 	break;
     }
