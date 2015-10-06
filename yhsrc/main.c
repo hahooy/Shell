@@ -25,6 +25,12 @@ int main(int argc, char *argv[])
 		// code executed by child
 		cmdRedirection(programs[0], dflag);
 		setenv("parent", shellpath, 1);
+
+		/* change the group pid of the background process so that it won't be killed */
+		if (!isInteractive(programs[0])) {		    
+		    setpgid(0, 0); 
+		}
+
 		execvp((programs[0] -> argv)[0], (programs[0] -> argv));
 		exit(1);
 	    } else {
