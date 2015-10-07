@@ -55,12 +55,14 @@ void cmdRedirection(Program *, int);
 void sig_init(void); /* initialize signal functions */
 /* build-in function */
 int isBuildIn(int, char **);
+int isInternal(int argc, char *argv[]);
 /* environment variable setter */
 void set_foreground_return_value(int);
 void set_shell_pid(void);
 void set_background_pid(int background_pid);
 void init_localVar();
 void replaceVar_sish(char *argv[]);
+void exit_sish(int argc, char *argv[]);
 
 /* -------variable decalaration--------- */
 

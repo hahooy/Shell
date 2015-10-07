@@ -51,10 +51,14 @@ void cmdPiped(Program *command[],
                 close(pipefds[i]);
             }
             // execute command
-            if( execvp((command[k]->argv)[0], command[k]->argv) < 0 ){
-                printerr(dFlag, "execvp error\n");
-                exit(1);
-            }
+	    if (!isBuildIn(command[k] -> argc, command[k] -> argv)) {
+		if( execvp((command[k]->argv)[0], command[k]->argv) < 0 ){
+		    printerr(dFlag, "execvp error\n");
+		    exit(1);
+		}
+	    }
+
+	    exit(1);
         }// child done
         else if(pid < 0){ // fork error
             printerr(dFlag, "fork error\n");

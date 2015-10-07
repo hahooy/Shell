@@ -20,6 +20,7 @@ void dir_sish(int argc, char *argv[]);
 void kill_sish(int argc, char *argv[]);    
 void pause_sish(int argc, char *argv[]);  
 int isBuildIn(int argc, char *argv[]);
+int isInternal(int argc, char *argv[]);
 int findVar(char* search_key);
 void set_sish(int argc, char *argv[]);
 void unset_sish(int argc, char *argv[]);
@@ -367,28 +368,41 @@ int isBuildIn(int argc, char *argv[])
     }
     if (!strcmp("history", argv[0])) {
 	history_sish(argc, argv);
-    } else if (!strcmp("exit", argv[0])) {
+    } else if (!strcmp("echo", argv[0])) {
+	echo_sish(argc, argv);
+    } else if (!strcmp("dir", argv[0])) {
+	dir_sish(argc, argv);
+    } else {
+	return 0;
+    }
+    return 1;
+}
+
+/* commands that have side effects and can not be executed by the child */
+int isInternal(int argc, char *argv[])
+{
+    if (argv[0] == NULL || argc == 0) {
+	printerr(debugLevel, "enter your command\n");
+	return 1;
+    }
+    if (!strcmp("exit", argv[0])) {
 	exit_sish(argc, argv);
+    } else if (!strcmp("environ", argv[0])) {
+	environ_sish(argc, argv);
+    } else if (!strcmp("help", argv[0])) {
+	help_sish(argc, argv);
     } else if (!strcmp("repeat", argv[0])) {
 	repeat_sish(argc, argv);
     } else if (!strcmp("clr", argv[0])) {
 	clr_sish(argc, argv);
-    } else if (!strcmp("echo", argv[0])) {
-	echo_sish(argc, argv);
     } else if (!strcmp("chdir", argv[0])) {
 	chdir_sish(argc, argv);
-    } else if (!strcmp("environ", argv[0])) {
-	environ_sish(argc, argv);
     } else if (!strcmp("export", argv[0])) {
 	export_sish(argc, argv);
     } else if (!strcmp("unexport", argv[0])) {
 	unexport_sish(argc, argv);
     } else if (!strcmp("show", argv[0])) {
 	show_sish(argc, argv);
-    } else if (!strcmp("help", argv[0])) {
-	help_sish(argc, argv);
-    } else if (!strcmp("dir", argv[0])) {
-	dir_sish(argc, argv);
     } else if (!strcmp("set", argv[0])) {
 	set_sish(argc, argv);
     } else if (!strcmp("unset", argv[0])) {
