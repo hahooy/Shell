@@ -1,7 +1,24 @@
 echo hello world
-history
-set a 5
-show a
-history
+set 5 five
+set 6 six
+set 7 seven
+show $5 $6 $7
+show 5 6 7
+unset 6
+unset 7
+show $5 $6 $7
+export MYENV1 test!!!!!!
+export MYENV2 test!!!!!!
+environ
+unexport MYENV2
+environ
+history 4
+chdir ..
+dir
+chdir yhsrc
 repeat
+wait -1
+clr
+pause
+cat main.c > temp.txt
 cat main.c | wc

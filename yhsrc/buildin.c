@@ -268,7 +268,7 @@ void echo_sish(int argc, char *argv[])
 
 void chdir_sish(int argc, char *argv[])
 {
-    if (argc < 2 || argc > 2) {
+    if (argc != 2) {
 	printerr(debugLevel, "usage: chdir path\n");
 	return;
     }
