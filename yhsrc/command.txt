@@ -1,0 +1,7 @@
+echo hello world
+history
+set a 5
+show a
+history
+repeat
+cat main.c | wc
