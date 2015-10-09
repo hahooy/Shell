@@ -1,4 +1,9 @@
-# Yongzheng Huang, 445575 Operating Systems Project 1
+# Junyuan Suo,
+# Yilong Hu,
+# Yongzheng Huang, 445575
+# Operating Systems Project 1.
+# To compile the sish source code, type "make main" on the command line.
+# To run the sish shell, type "./sish".
 
 sish: sish.c
 	gcc -Wall -g sish.c -o sish

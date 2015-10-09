@@ -3,7 +3,6 @@
 int init_var(void);
 void init_batchfile(void);
 int isInteractive(Program *);
-int isInputFileReady(void);
 
 char *shellcommand; /* store argv[0], the command to invoke sish */
 
@@ -89,11 +88,6 @@ int isInteractive(Program *pro)
     return !(pro -> bg);
 }
 
-int isInputFileReady(void)
-{
-    return 0;
-}
-
 /* initialize the input file */
 void init_batchfile(void)
 {
@@ -109,7 +103,6 @@ void init_batchfile(void)
     for (int i = 0; filearg[i] != NULL && i < MAXFILEARG; i++) {	
 	char name[20];
 	sprintf(name, "%d", i + 1);
-	printf("%s\n", filearg[i]);
 	char *tempargv[] = {"set", name, filearg[i]};
 	set_sish(3, tempargv);
     }
