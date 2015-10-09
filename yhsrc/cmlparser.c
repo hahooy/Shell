@@ -244,13 +244,16 @@ int writeHistory(char *line)
 	exit(1);
     }
     
-    if (repeatCmd[0] == '\0') {
-	/* update history only when the command is from stdin */
-	cmdIndex++;
-	fprintf(historyptr, "%d %s", cmdIndex, line);
-    } else {
-	repeatCmd[0] = '\0'; /* empty command buffer */
+    /* do not write repeat command into history */
+    if (programs[0] == NULL ||
+	programs[0] -> argc == 0 ||
+	(programs[0] -> argv)[0] == NULL ||
+	!strcmp((programs[0] -> argv)[0], "repeat")) {
+	return 0;
     }
+    
+    cmdIndex++;
+    fprintf(historyptr, "%d %s", cmdIndex, line);
 
     fflush(historyptr); /* flush the buffer immediately */
     return 0;
@@ -265,19 +268,17 @@ int parse_input_line(void)
     char *line = NULL;
     size_t linecap = 0;
 
-    if (fflag && getline(&line, &linecap, batchfileptr) != -1) {
+    if (strcmp(repeatCmd, "") != 0) {
+	line = strdup(repeatCmd); /* get input from the buffer */
+	repeatCmd[0] = '\0'; /* empty command buffer */
+    } else if (fflag && getline(&line, &linecap, batchfileptr) != -1) {
 	/* get input from the batch file if file is not empty */
-    } else if (strcmp(repeatCmd, "") == 0) {	
+    } else {	
         /* get input from the command line if buffer is empty */
 	fprintf(stdout, "sish >> ");
 	getline(&line, &linecap, stdin);
-
-    } else {
-	/* get input from the buffer */
-	line = strdup(repeatCmd);
     }
     
-    writeHistory(line);
     tokcml(line, &tokens);
     replaceVar_sish(tokens);
 
@@ -291,6 +292,7 @@ int parse_input_line(void)
     
     setNumOfPipes(tokens);
     getArgs(tokens);
+    writeHistory(line);
 
     /* clean up */
     token_destroy(tokens);

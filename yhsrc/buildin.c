@@ -21,6 +21,7 @@ void kill_sish(int argc, char *argv[]);
 void pause_sish(int argc, char *argv[]);  
 int isBuildIn(int argc, char *argv[]);
 char *findVar(char* search_key);
+int isInternal(int argc, char *argv[]);
 void set_sish(int argc, char *argv[]);
 void unset_sish(int argc, char *argv[]);
 void destroy_localVar(void);
@@ -100,6 +101,9 @@ void unset_sish(int argc, char *argv[]){
 //a function to substitute the variables in argument with their values
 void replaceVar_sish(char *argv[])
 {    
+    if (argv == NULL || argv[0] == NULL) {
+	return;
+    }
     for (int i=1; argv[i] != NULL; ++i){
 	if (argv[i][0] == '$') {
 	    char *tempstr;
@@ -216,7 +220,7 @@ void repeat_sish(int argc, char *argv[])
 {
     char *line = NULL;
     int curLineNum = 0;
-    int targetLineNum = cmdIndex - 1;
+    int targetLineNum = cmdIndex;
     size_t linecap = 0;
     ssize_t linelen;
     FILE *fp = fopen("history", "r");    
@@ -237,12 +241,8 @@ void repeat_sish(int argc, char *argv[])
 	}
 	++curLineNum;
 	if (curLineNum == targetLineNum) {
-	    if (strcmp(line + 2, "repeat\n") == 0) {
-		printerr(debugLevel, "repeat the repeat command is not allowed\n");
-	    } else {
-		strncpy(repeatCmd, line + 2, BUFFERSIZE);
-		printf("%s", repeatCmd);
-	    }
+	    strncpy(repeatCmd, strstr(line, " ") + 1, BUFFERSIZE);
+	    printf("%s", repeatCmd);	    
 	    break;
 	}
     }
@@ -280,6 +280,7 @@ void chdir_sish(int argc, char *argv[])
 	char * buffer = malloc(len);
 	sprintf(buffer, "invalid path: %s\n", argv[1]);
 	printerr(debugLevel, buffer);
+	free(buffer);	     
     }
 }
 
@@ -373,28 +374,41 @@ int isBuildIn(int argc, char *argv[])
     }
     if (!strcmp("history", argv[0])) {
 	history_sish(argc, argv);
-    } else if (!strcmp("exit", argv[0])) {
+    } else if (!strcmp("echo", argv[0])) {
+	echo_sish(argc, argv);
+    } else if (!strcmp("dir", argv[0])) {
+	dir_sish(argc, argv);
+    } else {
+	return 0;
+    }
+    return 1;
+}
+
+/* commands that have side effects and can not be executed by the child */
+int isInternal(int argc, char *argv[])
+{
+    if (argv[0] == NULL || argc == 0) {
+	printerr(debugLevel, "enter your command\n");
+	return 1;
+    }
+    if (!strcmp("exit", argv[0])) {
 	exit_sish(argc, argv);
+    } else if (!strcmp("environ", argv[0])) {
+	environ_sish(argc, argv);
+    } else if (!strcmp("help", argv[0])) {
+	help_sish(argc, argv);
     } else if (!strcmp("repeat", argv[0])) {
 	repeat_sish(argc, argv);
     } else if (!strcmp("clr", argv[0])) {
 	clr_sish(argc, argv);
-    } else if (!strcmp("echo", argv[0])) {
-	echo_sish(argc, argv);
     } else if (!strcmp("chdir", argv[0])) {
 	chdir_sish(argc, argv);
-    } else if (!strcmp("environ", argv[0])) {
-	environ_sish(argc, argv);
     } else if (!strcmp("export", argv[0])) {
 	export_sish(argc, argv);
     } else if (!strcmp("unexport", argv[0])) {
 	unexport_sish(argc, argv);
     } else if (!strcmp("show", argv[0])) {
 	show_sish(argc, argv);
-    } else if (!strcmp("help", argv[0])) {
-	help_sish(argc, argv);
-    } else if (!strcmp("dir", argv[0])) {
-	dir_sish(argc, argv);
     } else if (!strcmp("set", argv[0])) {
 	set_sish(argc, argv);
     } else if (!strcmp("unset", argv[0])) {

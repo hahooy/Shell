@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     for (;;) {
 	parse_input_line();
-	if (isBuildIn(programs[0] -> argc, programs[0] -> argv)) {
+	if (isInternal(programs[0] -> argc, programs[0] -> argv)) {
 	    continue;
 	}
 	if (!ispiped()) {
@@ -34,7 +34,9 @@ int main(int argc, char *argv[])
 		    setpgid(0, 0); 
 		}
 
-		execvp((programs[0] -> argv)[0], (programs[0] -> argv));
+		if (!isBuildIn(programs[0] -> argc, programs[0] -> argv)) {
+		    execvp((programs[0] -> argv)[0], (programs[0] -> argv));
+		}
 		exit(1);
 	    } else {
 		if (isInteractive(programs[0])) {
