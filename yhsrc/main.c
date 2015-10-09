@@ -1,3 +1,9 @@
+/* CSE422 Project 1: Toy Shell */
+/* Name:            ID:        */
+/* Junyuan Suo,                */
+/* Yilong Hu,                  */
+/* Yongzheng Huang, 445575     */
+
 #include "shell.h"
 
 int init_var(void);
