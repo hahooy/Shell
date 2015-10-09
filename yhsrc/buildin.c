@@ -20,9 +20,10 @@ void dir_sish(int argc, char *argv[]);
 void kill_sish(int argc, char *argv[]);    
 void pause_sish(int argc, char *argv[]);  
 int isBuildIn(int argc, char *argv[]);
-int findVar(char* search_key);
+char *findVar(char* search_key);
 void set_sish(int argc, char *argv[]);
 void unset_sish(int argc, char *argv[]);
+void destroy_localVar(void);
 
 /* function definition */
 
@@ -40,6 +41,13 @@ void init_localVar(){
     for (int i = 0; i < 100; ++i) {
     	//initilize all the struct with empty flag to be 1
 	variables[i].empty = 1;
+    }
+}
+
+void destroy_localVar(void)
+{
+    if (variables != NULL) {
+	free(variables);
     }
 }
 
@@ -90,43 +98,35 @@ void unset_sish(int argc, char *argv[]){
 }
 
 //a function to substitute the variables in argument with their values
-void replaceVar_sish(char *argv[]){
-    //for each value search its key in the input argument
+void replaceVar_sish(char *argv[])
+{    
     for (int i=1; argv[i] != NULL; ++i){
-        //if the argument has a dollar sign in front of it
-	if(argv[i][0] == '$'){
-	    char *target_key = malloc(BUFFERSIZE * sizeof(char));
-	    strncpy(target_key, argv[i]+1, BUFFERSIZE);
-
-	    //overwrite the variable with its value stored in map
-	    if(findVar(target_key) == 0){
-		//if the key is found then overwrite the variable with that key
-		strncpy(argv[i], target_key, strlen(argv[i]));
-			
-	    }
-	    
-	    free(target_key);
+	if (argv[i][0] == '$') {
+	    char *tempstr;
+	    if ((tempstr = findVar(argv[i] + 1)) != NULL) {
+		free(argv[i]); /* clean up the old token */
+		argv[i] = strdup(tempstr); /* replicate the new token */
+	    }	    
 	}
     }	
 }
 
 //a function to search for a give key in the struct array
 //return 0 if the key is found, otherwise return 1
-int findVar(char* search_key){
+char *findVar(char* search_key)
+{
     for (int i = 0; i < 100; ++i) {
     	//go through the array of varibles and check for all variables
 	if(!variables[i].empty) {
-	    //if the variable struct is not marked as empty
 	    if(!strcmp(search_key, variables[i].key)) {
-		//overwrite the search_key with the value we found
-		strncpy(search_key, variables[i].value, strlen(search_key));
-		return 0;
+		/* search hit */
+		return variables[i].value;
 	    }
 	}
     }
-    //if after the loop still not return 
-    //then the key is not found and return 1
-    return 1;
+
+    /* return null if not found */
+    return NULL;
 }
 
 
@@ -150,14 +150,20 @@ void cleanup_sish(void)
 	return;
     }
 
+    /* close open batch file */
+    if (fflag) {
+	if (fclose(batchfileptr) != 0) {
+	    printerr(debugLevel, "fail to close the batch file\n");
+	    return;
+	}
+    }
+
     /* free string variables */
     assert(shellpath != NULL);
     free(shellpath);
     
     /* free the memory space for the array storing local variables */
-    if (variables != NULL) {
-	free(variables);
-    }
+    destroy_localVar();
 
     /* free created program structs */
     for (int i = 0; i < MAXNUMOFPROS; i++) {

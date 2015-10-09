@@ -265,12 +265,15 @@ int parse_input_line(void)
     char *line = NULL;
     size_t linecap = 0;
 
-    /* get input from the command line if buffer is empty */
-    if (strcmp(repeatCmd, "") == 0) {
+    if (fflag && getline(&line, &linecap, batchfileptr) != -1) {
+	/* get input from the batch file if file is not empty */
+    } else if (strcmp(repeatCmd, "") == 0) {	
+        /* get input from the command line if buffer is empty */
 	fprintf(stdout, "sish >> ");
 	getline(&line, &linecap, stdin);
 
     } else {
+	/* get input from the buffer */
 	line = strdup(repeatCmd);
     }
     

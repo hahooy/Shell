@@ -1,7 +1,9 @@
 #include "shell.h"
 
 int init_var(void);
+void init_batchfile(void);
 int isInteractive(Program *);
+int isInputFileReady(void);
 
 char *shellcommand; /* store argv[0], the command to invoke sish */
 
@@ -10,9 +12,11 @@ int main(int argc, char *argv[])
 {    
     int pid;
     shellcommand = argv[0];
-    init_var();
+    init_var();    
     sig_init(); /* initialize signal functions */
     parsecml(argc, argv);
+    init_batchfile();
+    
     printerr(debugLevel, "The sish shell is now executing\n");
 
     for (;;) {
@@ -74,13 +78,43 @@ int init_var(void)
     }
     setenv("shell", shellpath, 1);
     set_shell_pid();
-    //initialize the array of var structs
+    /* initialize the array of var structs */
     init_localVar();
-
+ 
     return 0;
 }
 
 int isInteractive(Program *pro)
 {    
     return !(pro -> bg);
+}
+
+int isInputFileReady(void)
+{
+    return 0;
+}
+
+/* initialize the input file */
+void init_batchfile(void)
+{
+    if (!fflag) {
+	return;
+    }
+    if (batchfile == NULL) {
+	printerr(debugLevel, "file name is empty\n");
+	exit(1);
+    }
+
+    batchfileptr = fopen(batchfile, "r");
+    for (int i = 0; filearg[i] != NULL && i < MAXFILEARG; i++) {	
+	char name[20];
+	sprintf(name, "%d", i + 1);
+	printf("%s\n", filearg[i]);
+	char *tempargv[] = {"set", name, filearg[i]};
+	set_sish(3, tempargv);
+    }
+
+    if (batchfileptr == NULL) {
+	printerr(debugLevel, "could not open the batch file\n");
+    }
 }

@@ -55,6 +55,7 @@ void cmdRedirection(Program *, int);
 void sig_init(void); /* initialize signal functions */
 /* build-in function */
 int isBuildIn(int, char **);
+void set_sish(int argc, char *argv[]);
 /* environment variable setter */
 void set_foreground_return_value(int);
 void set_shell_pid(void);
@@ -72,6 +73,7 @@ int debugLevel;
 int cmdIndex;
 int fg_process_id; /* pid of the foreground program */
 char *batchfile;
+FILE *batchfileptr;
 char *filearg[MAXFILEARG];
 Program *programs[MAXNUMOFPROS]; /* input programs */
 FILE *historyptr;
