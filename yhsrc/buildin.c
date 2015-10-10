@@ -155,6 +155,12 @@ void cleanup_sish(void)
 	return;
     }
 
+    /* delete history file */
+    if (remove(historyfilename) != 0) {
+	printerr(debugLevel, "fail to delete the history file\n");
+	return;
+    }
+
     /* close open batch file */
     if (fflag) {
 	if (fclose(batchfileptr) != 0) {
@@ -189,7 +195,7 @@ void wait_sish(int argc, char*argv[])
 
 void history_sish(int argc, char *argv[])
 {
-    FILE *fp = fopen("history", "r");
+    FILE *fp = fopen(historyfilename, "r");
     char* line = NULL;
     size_t len = 0;
     int lineNum = 0;
@@ -224,7 +230,7 @@ void repeat_sish(int argc, char *argv[])
     int targetLineNum = cmdIndex;
     size_t linecap = 0;
     ssize_t linelen;
-    FILE *fp = fopen("history", "r");    
+    FILE *fp = fopen(historyfilename, "r");    
 
     if (fp == NULL) {
 	printerr(debugLevel, "could not open history file!\n");

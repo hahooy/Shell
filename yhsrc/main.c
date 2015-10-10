@@ -70,7 +70,8 @@ int init_var(void)
     xflag = 0;
     fflag = 0;
     debugLevel = 0;
-    historyptr = fopen("history", "w+");
+    sprintf(historyfilename, "history%d", getpid());
+    historyptr = fopen(historyfilename, "w+");
     cmdIndex = 0;
     repeatCmd[0] = '\0';
     shellpath = malloc(BUFFERSIZE * sizeof(char));

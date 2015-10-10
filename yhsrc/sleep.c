@@ -10,4 +10,5 @@ int main(int argc, char *argv[]) {
     printf("start sleep for %d seconds\n", seconds);
     sleep(seconds);
     printf("end sleep\n");
+    exit(5);
 }
