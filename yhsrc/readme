@@ -11,6 +11,8 @@ SYNOPSIS
 COPYRIGHT
 		Feel free to use
 
+COMPILATION     make sish
+
 DESCRIPTION
 		Sish is a program that interprets commands that users type in and executes them. It acts as an interface between users and the underline operating system. The commands can be either an executable program or an internal command of sish. To start the sish, users will need to type in command:
 
