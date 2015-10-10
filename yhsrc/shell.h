@@ -79,7 +79,8 @@ char *batchfile;
 FILE *batchfileptr;
 char *filearg[MAXFILEARG];
 Program *programs[MAXNUMOFPROS]; /* input programs */
-char historyfilename[20];
+char historyfilename[BUFFERSIZE];
+char readmepath[BUFFERSIZE];
 FILE *historyptr;
 char repeatCmd[BUFFERSIZE]; /* buffer for repeat command */
 char *shellpath;

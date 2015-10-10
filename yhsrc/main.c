@@ -70,14 +70,12 @@ int init_var(void)
     xflag = 0;
     fflag = 0;
     debugLevel = 0;
-    sprintf(historyfilename, "history%d", getpid());
-    historyptr = fopen(historyfilename, "w+");
     cmdIndex = 0;
     repeatCmd[0] = '\0';
     shellpath = malloc(BUFFERSIZE * sizeof(char));
 
     /* define the environment variable: shell */
-    getcwd(shellpath, BUFFERSIZE);
+    getcwd(shellpath, BUFFERSIZE);    
     if (shellcommand[0] == '.') {
 	shellpath = strncat(shellpath, "/sish", 6);
     } else {
@@ -86,6 +84,16 @@ int init_var(void)
     }
     setenv("shell", shellpath, 1);
     set_shell_pid();
+
+    /* construct the path of readme and history files */
+    strncpy(readmepath, shellpath, BUFFERSIZE);
+    readmepath[strlen(shellpath) - 4] = '\0';
+    sprintf(historyfilename, "%shistory%d", readmepath, getpid());
+    strncat(readmepath, "readme", BUFFERSIZE);
+
+    /* open history file */
+    historyptr = fopen(historyfilename, "w+");
+
     /* initialize the array of var structs */
     init_localVar();
  

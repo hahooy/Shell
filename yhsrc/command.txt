@@ -22,7 +22,6 @@ environ
 history 4
 chdir ..
 dir
-chdir yhsrc
 repeat
 wait -1
 cat main.c > temp.txt

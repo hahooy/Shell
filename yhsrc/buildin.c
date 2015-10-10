@@ -332,8 +332,10 @@ void show_sish(int argc, char *argv[])
 
 void help_sish(int argc, char *argv[])
 {
-    char *temp = "more readme\n";
-    strncpy(repeatCmd, temp, BUFFERSIZE);
+    /* construct command "more readmepath\n" */
+    strncpy(repeatCmd, "more ", BUFFERSIZE);
+    strncat(repeatCmd, readmepath, BUFFERSIZE);
+    strncat(repeatCmd, "\n", BUFFERSIZE);
 }
 
 void dir_sish(int argc, char *argv[])
