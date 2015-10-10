@@ -15,7 +15,7 @@ cmlparser: cmlparser.c shell.h
 	gcc -Wall -g cmlparser.c -o cmlparser
 
 main: main.c cmlparser.c pipe.c my_signo.c buildin.c supplement.c shell.h 
-	gcc -Wall -g -o sish main.c cmlparser.c pipe.c my_signo.c buildin.c supplement.c
+	gcc -std=gnu11 -Wall -g -o sish main.c cmlparser.c pipe.c my_signo.c buildin.c supplement.c
 
 clean:
 	rm -f *.o

@@ -10,6 +10,7 @@
 #include <fcntl.h> /* needed for open */
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h> /* needed for waitpid */
 #include <dirent.h> /* needed for alphasort */
 
 /* -------macro definition--------- */
