@@ -1,4 +1,8 @@
-Developed by: Junyuan Suo, Yilong Hu, Yongzheng Huang
+Developed by:
+
+Junyuan Suo, ID: 446842, email: j.suo@wustl.edu
+Yilong Hu, ID: 438033, email: hu.yilong@wustl.edu
+Yongzheng Huang, ID: 445575, email: huangyongzheng@wustl.edu
 
 SISH
 
@@ -11,7 +15,8 @@ SYNOPSIS
 COPYRIGHT
 		Feel free to use
 
-COMPILATION     make sish
+COMPILATION
+		make sish
 
 DESCRIPTION
 		Sish is a program that interprets commands that users type in and executes them. It acts as an interface between users and the underline operating system. The commands can be either an executable program or an internal command of sish. To start the sish, users will need to type in command:

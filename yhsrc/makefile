@@ -1,6 +1,6 @@
-# Junyuan Suo,
-# Yilong Hu,
-# Yongzheng Huang, 445575
+# Junyuan Suo, ID: 446842, email: j.suo@wustl.edu
+# Yilong Hu, ID: 438033, email: hu.yilong@wustl.edu
+# Yongzheng Huang, ID: 445575, email: huangyongzheng@wustl.edu
 
 # Operating Systems Project 1.
 # To compile the sish source code, type "make sish" on the command line.

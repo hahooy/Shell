@@ -1,8 +1,8 @@
 /* CSE422 Project 1: Toy Shell */
-/* Name:            ID:        */
-/* Junyuan Suo,                */
-/* Yilong Hu,                  */
-/* Yongzheng Huang, 445575     */
+
+/* Junyuan Suo, ID: 446842, email: j.suo@wustl.edu */
+/* Yilong Hu, ID: 438033, email: hu.yilong@wustl.edu */
+/* Yongzheng Huang, ID: 445575, email: huangyongzheng@wustl.edu */
 
 #include "shell.h"
 
