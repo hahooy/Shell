@@ -107,10 +107,11 @@ void replaceVar_sish(char *argv[])
     for (int i=1; argv[i] != NULL; ++i){
 	if (argv[i][0] == '$') {
 	    char *tempstr;
-	    if ((tempstr = findVar(argv[i] + 1)) != NULL) {
+	    if ((tempstr = findVar(argv[i] + 1)) != NULL /* search in local */
+		|| (tempstr = getenv(argv[i] + 1)) != NULL) { /* search in global */
 		free(argv[i]); /* clean up the old token */
 		argv[i] = strdup(tempstr); /* replicate the new token */
-	    }	    
+	    }
 	}
     }	
 }
