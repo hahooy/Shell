@@ -22,9 +22,16 @@ environ
 history 4
 chdir ..
 dir
+history 5
 repeat
+help
+
+
+
 wait -1
 cat main.c > temp.txt
 cat main.c | wc
+history
+
 echo hello world | head | wc
 history > history_test.txt
