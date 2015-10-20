@@ -52,18 +52,26 @@ void sig_catch(int signo)
 
     switch (signo) {
     case SIGINT:
+	if (fg_process_id != 0) 
+	    kill(fg_process_id, SIGINT);
 	printerr(debugLevel, " catched SIGINT\n");
 	fflush(stdout);
 	break;
     case SIGQUIT:
+	if (fg_process_id != 0) 
+	    kill(fg_process_id, SIGQUIT);
 	printerr(debugLevel, " catched SIGQUIT\n");
 	fflush(stdout);
 	break;
     case SIGCONT:
+	if (fg_process_id != 0) 
+	    kill(fg_process_id, SIGCONT);
 	printerr(debugLevel, " catched SIGCONT\n");
 	fflush(stdout);
 	break;
     case SIGTSTP:
+	if (fg_process_id != 0)
+	    kill(fg_process_id, SIGTSTP);
 	printerr(debugLevel, " catched SIGTSTP\n");
 	fflush(stdout);
 	break;

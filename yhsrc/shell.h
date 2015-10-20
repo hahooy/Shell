@@ -19,7 +19,7 @@
 #define MAXTOKENS 1000  /* maximum number of tokens from command line input */
 #define BUFFERSIZE 1000 /* size of all buffer strings */
 #define MAXNUMOFPROS 4  /* maximum number of input programs */
-#define TOKENDELM " \t\n" /* delimiters for parsing the command line input */
+#define TOKENDELM " \t\n\r" /* delimiters for parsing the command line input */
 
 /* -------define Program--------- */
 
