@@ -29,7 +29,16 @@ void set_shell_pid(void) {
 // set "?" the value returned by the last foreground command
 void set_foreground_return_value(int cmd_exit_status) {
 	char last_exit_status[50];
-	sprintf(last_exit_status, "%d", cmd_exit_status);
+	if (WIFEXITED(cmd_exit_status)) { /* process exited normally */
+	    sprintf(last_exit_status, "%d", WEXITSTATUS(cmd_exit_status));
+	}
+	else if (WIFSIGNALED(cmd_exit_status)) { /* child exited on a signal */
+	    sprintf(last_exit_status, "%d", WTERMSIG(cmd_exit_status));
+	}
+	else if (WIFSTOPPED(cmd_exit_status)) { /* child was stopped */
+	    sprintf(last_exit_status, "%d", WSTOPSIG(cmd_exit_status));
+	}
+
 	setenv("?", last_exit_status, 1);
 }
 

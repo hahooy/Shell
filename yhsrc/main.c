@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 		if (isInteractive(programs[0])) {
 		    fg_process_id = pid;
 		    int status;
-		    waitpid(pid, &status, WUNTRACED);
+		    waitpid(pid, &status, 0);
 		    set_foreground_return_value(status);
 		} else {
 		    /* record the pid of the last background process */

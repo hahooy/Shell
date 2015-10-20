@@ -60,7 +60,7 @@ void sig_catch(int signo)
 	fflush(stdout);
 	break;
     case SIGCONT:
-	printerr(debugLevel, " catched SIGQUIT\n");
+	printerr(debugLevel, " catched SIGCONT\n");
 	fflush(stdout);
 	break;
     case SIGTSTP:
@@ -69,7 +69,6 @@ void sig_catch(int signo)
 	break;
     case SIGCHLD:
 	printerr(debugLevel, " catched SIGCHLD\n");
-	waitpid(0, 0, WNOHANG);
 	fflush(stdout);
 	break;
     default:
