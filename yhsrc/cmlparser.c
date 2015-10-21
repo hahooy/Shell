@@ -179,7 +179,11 @@ int getArgs(char *tokens[])
     if (ispiped()) {
 	for (int i = 0; tokens[i] != NULL; i++) {
 	    if (strcmp("|", tokens[i]) != 0) {
-		temp[position++] = tokens[i];
+		if (strcmp("!", tokens[i]) == 0) {
+		    bg = 1;
+		} else {
+		    temp[position++] = tokens[i];
+		}
 	    } else {
 		Program *p = Program_create(position, temp, 0, 0, "", "", bg);
 		programs[numPro++] = p;

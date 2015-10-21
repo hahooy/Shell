@@ -74,9 +74,13 @@ void cmdPiped(Program *command[],
         close(pipefds[i]);
     }
     //Parent wait for children
-    for(int i = 0; i < numPipes + 1; i++) {
-        waitpid(0, &status, WUNTRACED);
-	set_foreground_return_value(status);
+    if (isInteractive(command[numOfPipes])) {
+	for(int i = 0; i < numPipes + 1; i++) {
+	    waitpid(0, &status, WUNTRACED);
+	    set_foreground_return_value(status);
+	}
+    } else {
+	set_background_pid(pid);
     }
 }
 
